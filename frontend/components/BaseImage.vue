@@ -1,5 +1,5 @@
 <script setup>
-import { IsvalidUrl } from '~/composables/Image';
+import {IsvalidUrl} from '../composables/Image.js';
 import IconPlaceholder from './Icon/Placeholder.vue';
 defineProps({
     url:String,
