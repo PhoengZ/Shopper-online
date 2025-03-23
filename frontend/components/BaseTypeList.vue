@@ -1,4 +1,5 @@
 <script setup>
+
 defineProps({
     product:Array,
 });
@@ -6,7 +7,7 @@ defineProps({
 <template>
     <ul class="[&>li] w-2xs block">
         <li v-for="p in product">
-            <BaseTypeItem @onclik="console.log('test')">{{p}}</BaseTypeItem>
+            <BaseTypeItem @clik="console.log('test')">{{p}}</BaseTypeItem>
         </li>
     </ul>
 </template>

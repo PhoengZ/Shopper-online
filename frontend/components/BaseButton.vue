@@ -3,10 +3,13 @@ const pops = defineProps({
     size:String,
     theme:String,
 });
+
+const emit = defineEmits(['click']);
+
 const s = differentButtonSize(pops.size);
 const v = differentVariant(pops.theme);
 const handleClick = () => {
-  console.log('Button clicked!');
+    emit('click');
 };
 </script>
 
