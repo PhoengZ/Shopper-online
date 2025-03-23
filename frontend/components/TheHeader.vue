@@ -21,6 +21,7 @@ const showFilter = ()=>{
 };
 </script>
 <template>
+    <BaseHeadBar/>
     <section class=" flex justify-center flex-row gap-5 items-start">
         <div class=" flex justify-center flex-col w-2xl ">
             <BaseSearch @search="handleGet"/>
