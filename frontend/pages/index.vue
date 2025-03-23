@@ -1,8 +1,13 @@
 <script setup>
-import BaseImage from '../components/BaseImage.vue';
+
+let pd = ref([{name:'Item',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'},
+{name:'Item',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'},
+{name:'Item',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'}]);
 useHead({
     title:"Shopper-online",
 });
+
+
 </script>
 
 <template>
@@ -13,4 +18,8 @@ useHead({
         Hello
     </BaseButton>
     <BaseImage url=""/> -->
+    <section>
+        <!-- Part of showing product  -->
+         <BaseCardList class="p-6" :product="pd"/>
+    </section>
 </template>

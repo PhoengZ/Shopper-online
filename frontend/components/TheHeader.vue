@@ -28,7 +28,7 @@ const showFilter = ()=>{
         </div>
         <div class=" relative">
             <BaseOption @open-filter="showFilter" :flag="!isShowed"/>
-            <BaseTypeList v-if="isShowed" :product="['a','b','c','d','e','f','g',]" class=" absolute max-h-30 overflow-y-auto drop-shadow-lg"></BaseTypeList>
+            <BaseTypeList v-if="isShowed" :product="['a','b','c','d','e','f','g',]" class=" absolute max-h-30 overflow-y-auto drop-shadow-lg z-10"></BaseTypeList>
         </div>
         <!-- this div is drop to center when i add something at abseBadgeList -->
     </section>
