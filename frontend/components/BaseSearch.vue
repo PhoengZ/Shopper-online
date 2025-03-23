@@ -10,7 +10,7 @@ const handleClick = ()=>{
 </script>
 
 <template>
-    <div class="relative w-full max-w-md">
+    <div class="relative w-2xl">
         <input 
             type="text"
             class="w-full text-xl text-white bg-gray-600 rounded-2xl px-5 py-2 focus:outline-none focus:ring-2 focus:ring-gray-400 placeholder-gray-500"

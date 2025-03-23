@@ -21,15 +21,16 @@ const showFilter = ()=>{
 };
 </script>
 <template>
-    <section class=" flex justify-center flex-row gap-5">
-        <div class=" flex justify-center">
+    <section class=" flex justify-center flex-row gap-5 items-start">
+        <div class=" flex justify-center flex-col w-2xl ">
             <BaseSearch @search="handleGet"/>
-            <BaseBadgeList :badges="searchResults"/>
+            <BaseBadgeList :badges="searchResults" class=" overflow-x-hidden"/>
         </div>
         <div class=" relative">
-            <BaseOption @open-filter="showFilter"/>
-            <BaseTypeList v-if="isShowed" :product="['a','b','c']" class=" absolute"></BaseTypeList>
+            <BaseOption @open-filter="showFilter" :flag="!isShowed"/>
+            <BaseTypeList v-if="isShowed" :product="['a','b','c','d','e','f','g',]" class=" absolute max-h-30 overflow-y-auto drop-shadow-lg"></BaseTypeList>
         </div>
+        <!-- this div is drop to center when i add something at abseBadgeList -->
     </section>
     
 </template>
