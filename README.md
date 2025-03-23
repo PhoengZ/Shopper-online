@@ -4,7 +4,8 @@ This is an online shopping web application built using Vue.js, Nuxt.js, and Tail
 Frontend:
 1. User-friendly interface built with Vue.js and Nuxt.js.  
 2. Responsive design using TailwindCSS for a modern look and feel.  
-3. Browse products and view detailed product pages.  
+3. Browse products and view detailed product pages.
+
 Backend:
 1. RESTful API built with Node.js and Express.js.  
 2. CRUD operations for products and orders.  
