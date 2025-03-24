@@ -10,12 +10,12 @@ export const differentButtonSize=(size)=>{
 export const differentVariant = (theme)=>{
     switch (theme){
         case "first":
-            return "bg-blue-500 text-white hover:bg-blue-600 rounded-2xl";
+            return "bg-blue-500 text-white hover:bg-blue-600 rounded-md border-2";
         case "second":
-            return "bg-green-500 text-white hover:bg-green-600 rounded-2xl";
+            return "bg-green-500 text-white hover:bg-green-600 rounded-md border-2";
         case "third":
-            return "bg-red-500 text-white hover:bg-red-600 rounded-2xl";
+            return "bg-red-500 text-white hover:bg-red-600 rounded-md border-2";
         default:
-            return "bg-gray-500 text-white hover:bg-gray-600 rounded-2xl";
+            return "bg-gray-500 text-white hover:bg-gray-600 rounded-md border-2";
     }
 };
