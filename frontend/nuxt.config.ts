@@ -2,6 +2,11 @@
 export default defineNuxtConfig({
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },
+  runtimeConfig: {
+    public: {
+      baseApiUrl: '',
+    },
+  },
   css: ['~/assets/css/main.css'], // Add your Tailwind CSS file
   postcss: {
     plugins: {
@@ -9,4 +14,5 @@ export default defineNuxtConfig({
       autoprefixer: {}, // Autoprefixer
     },
   },
+  modules: ['@vee-validate/nuxt', '@pinia/nuxt'],
 });

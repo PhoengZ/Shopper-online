@@ -5,6 +5,7 @@ import BaseOption from './BaseOption.vue';
 
 defineProps({
     openFilter:Boolean,
+    username:String,
 })
 let isShowed = ref(false);
 let searchResults = ref([]);
@@ -21,7 +22,7 @@ const showFilter = ()=>{
 };
 </script>
 <template>
-    <BaseHeadBar/>
+    <BaseHeadBar :username="username"/>
     <section class=" flex justify-center flex-row gap-5 items-start">
         <div class=" flex justify-center flex-col w-2xl ">
             <BaseSearch @search="handleGet"/>

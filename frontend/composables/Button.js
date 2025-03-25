@@ -14,7 +14,9 @@ export const differentVariant = (theme)=>{
         case "second":
             return "bg-green-500 text-white hover:bg-green-600 rounded-md border-2";
         case "third":
-            return "bg-red-500 text-white hover:bg-red-600 rounded-md border-2";
+            return "bg-red-500 text-white hover:bg-red-600 rounded-md border-2";    
+        case "fourth":
+            return "bg-none text-gray-500 hover:underline";
         default:
             return "bg-gray-500 text-white hover:bg-gray-600 rounded-md border-2";
     }
