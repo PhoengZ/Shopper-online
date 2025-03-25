@@ -1,0 +1,294 @@
+openapi: "3.0.2"
+info:
+  title: Portfolio
+  version: "1.0"
+servers:
+  - url: https://api.server.test/v1
+  - url: http://localhost:8000/v1
+paths:
+  /profile:
+    get:
+      summary: Get the profile
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Profile"
+    patch:
+      summary: Update the profile
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Profile"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutateStatus"
+        "401":
+          description: Not authenticated
+
+  /portfolios:
+    get:
+      summary: Get the portfolios
+      parameters:
+        - in: query
+          name: page
+          schema:
+            type: integer
+          description: The page number
+        - in: query
+          name: offset
+          schema:
+            type: integer
+          description: The page number
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    items:
+                      $ref: "#/components/schemas/Portfolio"
+    post:
+      summary: Create a new portfolio
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Portfolio"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutateStatus"
+        "401":
+          description: Not authenticated
+
+  /portfolios/{id}:
+    get:
+      summary: Get the portfolio
+      parameters:
+        - name: id
+          in: path
+          description: Portfolio ID
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    $ref: "#/components/schemas/Portfolio"
+    put:
+      summary: Update the portfolio
+      parameters:
+        - name: id
+          in: path
+          description: Portfolio ID
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Portfolio"
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutateStatus"
+        "401":
+          description: Not authenticated
+    delete:
+      summary: Delete the portfolio
+      parameters:
+        - name: id
+          in: path
+          description: Portfolio ID
+          required: true
+          schema:
+            type: string
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutateStatus"
+        "401":
+          description: Not authenticated
+
+  /auth/login:
+    post:
+      summary: Login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: notsu
+                password:
+                  type: string
+                  example: notsu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+                    example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IlBpY2hldCBJdG5nYW0iLCJpYXQiOjE1MTYyMzkwMjJ9.mVMnU3cgNFO27o_i1xxiYptVpa3ruv1H_mKJD3qzfj0
+
+  /auth/register:
+    post:
+      summary: Register
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: notsu
+                password:
+                  type: string
+                  example: notsu
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MutateStatus"
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    Profile:
+      type: object
+      properties:
+        overallSkills:
+          type: array
+          items:
+            type: string
+            example: "Management"
+        experiences:
+          type: array
+          items:
+            type: object
+            properties:
+              logo:
+                type: string
+                example: "https://cdn-images-1.medium.com/v2/resize:fit:400/1*r5OuqrQCyLCf11ecU1ccjA@2x.png"
+              title:
+                type: string
+                example: "Senior Engineering Manager"
+              company:
+                type: string
+                example: "Senestia"
+              type:
+                type: string
+                example: "fulltime"
+              start:
+                type: string
+                example: "2023-08-01T00:00:00.000+07:00"
+              end:
+                type: string
+                nullable: true
+                example: null
+              skills:
+                type: array
+                items:
+                  type: string
+                  example: "Management"
+              detail:
+                type: string
+                example: "- Manage the 6-8 engineers"
+    Portfolio:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 507f191e810c19729de860ea
+        cover:
+          type: string
+          example: "https://cdn-images-1.medium.com/v2/resize:fit:400/1*r5OuqrQCyLCf11ecU1ccjA@2x.png"
+        images:
+          type: array
+          items:
+            type: string
+            example: "https://cdn-images-1.medium.com/v2/resize:fit:400/1*r5OuqrQCyLCf11ecU1ccjA@2x.png"
+        skills:
+          type: array
+          items:
+            type: string
+            example: "Management"
+        title:
+          type: string
+          example: "Do something"
+        content:
+          type: string
+          example: "Do something"
+        excerpt:
+          type: string
+          example: "Do something"
+        publishedAt:
+          type: string
+          example: "2023-08-01T00:00:00.000+07:00"
+    User:
+      type: object
+      properties:
+        username:
+          type: string
+          example: notsu
+        password:
+          type: string
+          example: notsu
+    MutateStatus:
+      type: object
+      properties:
+        status:
+          type: boolean
+          example: true
