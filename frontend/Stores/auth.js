@@ -33,6 +33,12 @@ export const useAuthStore = defineStore('auth',()=>{
         user.value.LoggedIn = true;
         user.value.token = token;
     }
+    async function Logout() {
+        user.value.LoggedIn = false;
+        user.value.token = '';
+        token.value = null;
+        Username.value = '';
+    }
     return {
         user,
         userError,
@@ -40,6 +46,7 @@ export const useAuthStore = defineStore('auth',()=>{
         canEdit,
         Username,
         setUser,
-        Login
+        Login,
+        Logout
     }
 });

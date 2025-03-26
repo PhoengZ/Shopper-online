@@ -17,19 +17,24 @@ const name = ref('');
 if (token.value){
     name.value = user.Username;
 }
+onMounted(async ()=>{
+    if (token.value){
+        name.value = user.Username
+    }
+})
 
-
+const checkAuth = async ()=>{
+    if (token.value){
+        console.log("isLoggedIn");
+    }else{
+        navigateTo('/login');
+        console.log("isn't loggedIn");
+    }
+};
 </script>
 
 <template>
-    <!-- นี้คือหน้าหลัก
-    <BaseBadgeList :badges="['a', 'b']" />
-    <BaseButton size="small" theme="third">
-        <IconCart></IconCart>
-        Hello
-    </BaseButton>
-    <BaseImage url=""/> -->
-    <TheHeader :username="name"/>
+    <TheHeader :username="name" @auth="checkAuth"/>
     <section class="bg-white max-w-screen-lg m-auto px-3">
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" />

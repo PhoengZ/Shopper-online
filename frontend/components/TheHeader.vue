@@ -3,6 +3,8 @@ import BaseSearch from './BaseSearch.vue';
 import BaseBadgeList from './BaseBadgeList.vue';
 import BaseOption from './BaseOption.vue';
 
+defineEmits(['auth']);
+
 defineProps({
     openFilter:Boolean,
     username:String,
@@ -22,7 +24,7 @@ const showFilter = ()=>{
 };
 </script>
 <template>
-    <BaseHeadBar :username="username"/>
+    <BaseHeadBar :username="username" @is-dropuser="$emit('auth')"/>
     <section class=" flex justify-center flex-row gap-5 items-start">
         <div class=" flex justify-center flex-col w-2xl ">
             <BaseSearch @search="handleGet"/>
