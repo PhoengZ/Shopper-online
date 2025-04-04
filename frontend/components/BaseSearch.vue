@@ -1,12 +1,26 @@
 <script setup>
-const emit = defineEmits(['search',]);
+import { string } from 'yup';
+const prop = defineProps({
+    modelValue:{
+        type:String,
+        default:''
+    }
+})
+const emit = defineEmits(['search','update:modelValue']);
 
-let val = ref('');
-const handleClick = ()=>{
-    console.log(val.value);
-    emit('search',val.value);
-    val.value = '';
-}
+const val = ref(prop.modelValue);
+
+watch(() => prop.modelValue, (newVal) => {
+  val.value = newVal;
+});
+
+watch(val, (newVal) => {
+  emit('update:modelValue', newVal);
+});
+const handleClick = () => {
+  emit('search', val.value);
+  val.value = '';
+};
 </script>
 
 <template>

@@ -4,12 +4,13 @@ defineProps({
         type:Array,
     },
 });
+defineEmits(['item'])
 </script>
 <template>
     <ul class="[&>li]:inline-block">
         <li class=" mr-1 mt-1 md:mr-2 md:mt-2" v-for="item in badges" key="item">
             <BaseBadgeItem class=" font-bold" @click="()=>{
-                console.log(item);
+                $emit('item',item);
                 // used for emit to filter product from the old serching
             }">{{item}}</BaseBadgeItem>
         </li>
