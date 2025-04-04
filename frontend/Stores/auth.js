@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth',()=>{
         user.value.token = response.value.token;
 
         const token = useCookie('token');
-        token.value = response.value.token;
+        token.value = username;
         isLoggedIn.value = false;
         userError.value = '';
         Username.value = username;
@@ -39,6 +39,11 @@ export const useAuthStore = defineStore('auth',()=>{
         token.value = null;
         Username.value = '';
     }
+    // async function Register(username,password1,password2){
+    //     if (password1 != password2){
+
+    //     }
+    // }
     return {
         user,
         userError,

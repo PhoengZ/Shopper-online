@@ -15,11 +15,11 @@ const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
 if (token.value){
-    name.value = user.Username;
+    name.value = token.value;
 }
 onMounted(async ()=>{
     if (token.value){
-        name.value = user.Username
+        name.value = token.value;
     }
 })
 
@@ -28,7 +28,7 @@ const checkAuth = async ()=>{
         console.log("isLoggedIn");
     }else{
         navigateTo('/login');
-        console.log("isn't loggedIn");
+        // console.log("isn't loggedIn");
     }
 };
 </script>
