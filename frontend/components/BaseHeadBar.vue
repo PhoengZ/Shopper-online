@@ -7,7 +7,7 @@ const handleClick = ()=>{
     isShow.value = !isShow.value;
     emit('isDropuser');
 }
-const isShow = ref(false);
+const isShow = ref(!(prop.username === ''));
 const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
 </script>
 

@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { LoginApi } from "~/repositories/auth";
+import { LoginApi, registerApi } from "~/repositories/auth";
 
 export const useAuthStore = defineStore('auth',()=>{
     const user = ref({
@@ -39,11 +39,15 @@ export const useAuthStore = defineStore('auth',()=>{
         token.value = null;
         Username.value = '';
     }
-    // async function Register(username,password1,password2){
-    //     if (password1 != password2){
-
-    //     }
-    // }
+    async function Register(username,password){
+        const {data:response, error, status}  = await registerApi(username,password);
+        if (status === 'error'){
+            useCustomError(error.value,(error)=>{
+                userError.value = error.value;
+            })
+        }
+        return true;
+    }
     return {
         user,
         userError,
@@ -52,6 +56,7 @@ export const useAuthStore = defineStore('auth',()=>{
         Username,
         setUser,
         Login,
-        Logout
+        Logout,
+        Register
     }
 });

@@ -1,5 +1,4 @@
 <script setup>
-import RegisForm from '~/components/RegisForm.vue';
 import { useAuthStore } from '~/Stores/auth';
 
 definePageMeta({
@@ -8,7 +7,6 @@ definePageMeta({
 useHead({
     title:"Sign-in",
 });
-let reg = ref(false);
 const user = useAuthStore();
 async function onLogin(value){
     const check = await user.Login(value.username,value.password);
@@ -17,7 +15,7 @@ async function onLogin(value){
     }
 }
 function onRegsiter(){
-    console.log('yeah');
+    navigateTo("/signUp");
 }
 function onForgetpass(){
     console.log('yo');

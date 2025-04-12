@@ -25,11 +25,12 @@ const handleForgetPassword = ()=>{
             <h1 v-if="!regisForm && !forgetPassword" class=" font-bold text-6xl mb-10">Sign-in</h1>
             <BaseInput name="username" placeholder="Username"/>
             <BaseInput name="password" placeholder="Password"/>
-            <BaseInput v-if="regisForm" name="password" placeholder="Password"/>
             <div class=" flex justify-between w-10/12">
                 <BaseButton v-if="!regisForm" size="small" theme="fourth" @click="handleRegister" type="button">Sign-Up</BaseButton>  
                 <BaseButton v-if="!isSubmitting" size="large" theme="first" type="submit">Sign-in</BaseButton>
-                <BaseButton size="small" theme="fourth" @click="handleForgetPassword" type="button">ลืมรหัสผ่าน</BaseButton> 
+                <BaseButton size="small" theme="fourth" @click="handleForgetPassword" type="button">Forget
+                    <br>password
+                </BaseButton> 
             </div>
             
         </div>
