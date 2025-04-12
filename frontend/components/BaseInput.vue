@@ -4,8 +4,11 @@ const props = defineProps({
     name:String,
     placeholder:String,
     modelvalue:String,
+    type:{
+        type:String,
+        default:'text'
+    }
 })
-
 const {value,errorMessage} = useField(()=>props.name, undefined,{
     syncVModel:true,
     validateOnValueUpdate:false,
@@ -20,8 +23,8 @@ const style = computed(()=>{
 
 </script>
 <template>
-    <div class="mb-1 w-3/4 block">
-        <input :class="style" v-model="value" :placeholder="placeholder" :type="name">
+    <div class="mb-3 w-3/4 block">
+        <input :class="style" v-model="value" :placeholder="placeholder" :type="type">
         <BaseErrorMessage v-if="errorMessage">{{errorMessage}}</BaseErrorMessage>
     </div>
 </template>

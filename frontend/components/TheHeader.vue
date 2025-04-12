@@ -5,7 +5,7 @@ import BaseOption from './BaseOption.vue';
 
 defineEmits(['auth']);
 
-defineProps({
+const prop = defineProps({
     openFilter:Boolean,
     username:String,
 })
@@ -24,7 +24,6 @@ const showFilter = ()=>{
 };
 const handleItem = (item)=>{
     val.value = item;
-    // console.log(val.value);
 }
 const val = ref("");
 </script>

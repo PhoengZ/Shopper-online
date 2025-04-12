@@ -28,7 +28,6 @@ const checkAuth = async ()=>{
         console.log("isLoggedIn");
     }else{
         navigateTo('/login');
-        // console.log("isn't loggedIn");
     }
 };
 </script>
