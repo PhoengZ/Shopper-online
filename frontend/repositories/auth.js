@@ -9,7 +9,7 @@ export function LoginApi(username,password){
 }
 
 export function registerApi(username,password){
-    return useFetchAPI('auth/register',{
+    return useFetchAPI('/auth/register',{
        method:'post',
        body:{
             username,

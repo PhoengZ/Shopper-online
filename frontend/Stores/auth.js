@@ -1,4 +1,5 @@
 import { defineStore } from "pinia";
+import { decodeToken } from "~/composables/Decodetoken";
 import { LoginApi, registerApi } from "~/repositories/auth";
 
 export const useAuthStore = defineStore('auth',()=>{
@@ -23,7 +24,7 @@ export const useAuthStore = defineStore('auth',()=>{
         user.value.token = response.value.token;
 
         const token = useCookie('token');
-        token.value = username;
+        token.value = response.value.token;
         isLoggedIn.value = false;
         userError.value = '';
         Username.value = username;
@@ -32,6 +33,8 @@ export const useAuthStore = defineStore('auth',()=>{
     async function setUser(token) {
         user.value.LoggedIn = true;
         user.value.token = token;
+        const item = decodeToken(token);
+        Username.value = item.username;
     }
     async function Logout() {
         user.value.LoggedIn = false;

@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   runtimeConfig: {
     public: {
-      baseApiUrl: '',
+      baseApiUrl: process.env.NUXT_PUBLIC_BASE_API_URL,
     },
   },
   css: ['~/assets/css/main.css'], // Add your Tailwind CSS file

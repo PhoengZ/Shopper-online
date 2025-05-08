@@ -8,6 +8,7 @@ import (
 	"os"
 
 	"github.com/joho/godotenv"
+	"github.com/rs/cors"
 )
 
 func main() {
@@ -18,7 +19,13 @@ func main() {
 	}
 	config.ConnectDB()
 	routes.RegisterUserRoutes()
+	c := cors.New(cors.Options{
+		AllowedOrigins: []string{"http://localhost:3000"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedHeaders: []string{"Content-Type"},
+	})
+	handler := c.Handler(http.DefaultServeMux)
 	port := os.Getenv("PORT")
 	fmt.Println("Server is running on port ", port)
-	http.ListenAndServe(":"+port, nil)
+	http.ListenAndServe(":"+port, handler)
 }
