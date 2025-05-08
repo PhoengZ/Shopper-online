@@ -7,7 +7,7 @@ import (
 )
 
 func RegisterUserRoutes() {
-	http.HandleFunc("/login", controllers.LoginUser)
-	http.HandleFunc("/register", controllers.RegisterationUser)
+	http.HandleFunc("/auth/login", controllers.LoginUser)
+	http.HandleFunc("/auth/register", controllers.RegisterationUser)
 	http.Handle("/protected", middlewares.AuthMiddleware(http.HandlerFunc(controllers.ProtectedRoutwe)))
 }

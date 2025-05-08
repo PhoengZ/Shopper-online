@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth',()=>{
         user.value.token = response.value.token;
 
         const token = useCookie('token');
-        token.value = username;
+        token.value = response.value.token;
         isLoggedIn.value = false;
         userError.value = '';
         Username.value = username;

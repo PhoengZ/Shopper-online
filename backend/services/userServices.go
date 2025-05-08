@@ -27,7 +27,7 @@ func LoginUser(username, password string) (string, error) {
 	if err != nil {
 		return "", errors.New("invalid password")
 	}
-	token, err := utils.GenerateToken(user.ID)
+	token, err := utils.GenerateToken(user.ID, user.Username)
 	if err != nil {
 		return "", err
 	}
