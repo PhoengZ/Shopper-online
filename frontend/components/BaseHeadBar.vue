@@ -2,10 +2,13 @@
 const prop = defineProps({
     username:String,
 })
-const emit = defineEmits(['isDropuser']);
+const emit = defineEmits(['isDropuser','logout']);
 const handleClick = ()=>{
     isShow.value = !isShow.value;
     emit('isDropuser');
+}
+const handlelogout = () => {
+    emit('logout');
 }
 const isShow = ref(!(prop.username === ''));
 const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
@@ -18,7 +21,8 @@ const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
                 <IconUser/>
                 <h4 class=" text-white">{{username === '' ? 'Sign-in':username}}</h4>
             </div>
-            <BaseTypeList v-if="isShow" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10"/>
+            <BaseTypeList v-if="isShow" @logout="handlelogout" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10">
+            </BaseTypeList>
         </div>
         
     </div>
