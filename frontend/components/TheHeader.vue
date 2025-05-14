@@ -8,6 +8,7 @@ defineEmits(['auth','logout','checkItem','cancle']);
 const prop = defineProps({
     openFilter:Boolean,
     username:String,
+    openBlure:Boolean,
 })
 let isShowed = ref(false);
 let searchResults = ref([]);
@@ -30,7 +31,7 @@ const val = ref("");
 <template>
     <BaseHeadBar :username="username" @logout="$emit('logout')" @is-dropuser="$emit('auth')" @checkItem="$emit('checkItem')"
     @auth="$emit('auth')"/>
-    <section class=" flex justify-center flex-row gap-5 items-start ">
+    <section class=" flex justify-center flex-row gap-5 items-start" :class="openBlure ? 'blur-xs':''">
         <div class=" flex flex-col w-2xl min-h-[50px]">
             <BaseSearch @search="handleGet" v-model="val"/>
             <BaseBadgeList :badges="searchResults" @item="handleItem" class=" overflow-x-hidden"/>

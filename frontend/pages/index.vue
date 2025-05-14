@@ -3,7 +3,7 @@ import { useAuthStore } from '~/Stores/auth';
 definePageMeta({
     layout:false,
 });
-
+let showList = ref(false);
 let pd = ref([{name:'IPhone13',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'},
 {name:'IPhone14',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'},
 {name:'IPhone15',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'}]);
@@ -47,7 +47,7 @@ const checkItem = async ()=>{
     if (!CheckCookie()){
         navigateTo('/login');
     }
-    console.log("show item");
+    showList.value = !showList.value;
 }
 const Buying = async (item)=>{
     if (!CheckCookie()){
@@ -65,9 +65,10 @@ const Cancle = async (item)=>{
 </script>
 
 <template>
-    <TheHeader :username="name" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"  @cancle="Cancle"/>
-    <section class="bg-white max-w-screen-lg m-auto px-3">
+    <TheHeader :username="name" :openBlure="showList" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"  @cancle="Cancle"/>
+    <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" />
     </section>
+    <CartForm v-if="showList"/>
 </template>
