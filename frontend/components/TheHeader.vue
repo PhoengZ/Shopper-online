@@ -3,7 +3,7 @@ import BaseSearch from './BaseSearch.vue';
 import BaseBadgeList from './BaseBadgeList.vue';
 import BaseOption from './BaseOption.vue';
 
-defineEmits(['auth','logout']);
+defineEmits(['auth','logout','checkItem','cancle']);
 
 const prop = defineProps({
     openFilter:Boolean,
@@ -28,7 +28,8 @@ const handleItem = (item)=>{
 const val = ref("");
 </script>
 <template>
-    <BaseHeadBar :username="username" @logout="$emit('logout')" @is-dropuser="$emit('auth')"/>
+    <BaseHeadBar :username="username" @logout="$emit('logout')" @is-dropuser="$emit('auth')" @checkItem="$emit('checkItem')"
+    @auth="$emit('auth')"/>
     <section class=" flex justify-center flex-row gap-5 items-start ">
         <div class=" flex flex-col w-2xl min-h-[50px]">
             <BaseSearch @search="handleGet" v-model="val"/>

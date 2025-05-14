@@ -2,7 +2,7 @@
 const prop = defineProps({
     username:String,
 })
-const emit = defineEmits(['isDropuser','logout']);
+const emit = defineEmits(['isDropuser','logout','checkItem']);
 const handleClick = ()=>{
     isShow.value = !isShow.value;
     emit('isDropuser');
@@ -10,13 +10,17 @@ const handleClick = ()=>{
 const handlelogout = () => {
     emit('logout');
 }
+const handleItem = ()=>{
+    emit('checkItem');
+}
 const isShow = ref(!(prop.username === ''));
 const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
 </script>
 
 <template>
     <div class="w-full h-auto bg-gray-500 mb-4 drop-shadow-lg flex justify-end px-5 py-2 hover:cursor-pointer">
-        <div class=" relative">
+        <div class=" relative flex flex-row gap-5">
+            <IconShoppingCart class="rounded-3xl bg-none hover:bg-gray-600" @click="handleItem"/>
             <div class="flex justify-center items-center gap-2 rounded-e-2xl hover:underline" @click="handleClick">
                 <IconUser/>
                 <h4 class=" text-white">{{username === '' ? 'Sign-in':username}}</h4>

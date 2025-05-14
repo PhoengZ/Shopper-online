@@ -2,21 +2,18 @@
 defineProps({
     product:Array
 });
-defineEmits(['click','buy']);
+const emit = defineEmits(['buy']);
 
 const handleBuy = (item)=>{
-    console.log("Buy item: ",item);
+    emit('buy',item);
 };
-const handleCancle = (item)=>{
-    console.log("Cancle item: ",item);
-    
-};
+
 
 </script>
 <template>
     <ul class="[&>li] grid grid-cols-3 gap-4 ">
         <li v-for="item in product">
-            <BaseCardItem :model="item" @cancle="handleCancle" @buy="handleBuy"/>
+            <BaseCardItem :model="item" @buy="handleBuy"/>
         </li>
     </ul>
 </template>

@@ -10,7 +10,7 @@ let pd = ref([{name:'IPhone13',des:'The iPhone is a sleek, high-performance smar
 useHead({
     title:"Shopper-online",
 });
-
+let Item = ref([]);
 const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
@@ -22,9 +22,14 @@ onMounted(async ()=>{
         name.value = user.Username;
     }
 })
-
+function CheckCookie (){
+    if (!token.value){
+        return false;
+    }
+    return true;
+}
 const checkLogout = async ()=>{
-    if (token.value){
+    if (CheckCookie()){
         token.value = null;
         name.value = '';
         user.Username = '';
@@ -33,16 +38,36 @@ const checkLogout = async ()=>{
 }
 
 const checkAuth = async ()=>{
-    if (!token.value){
+    if (!CheckCookie()){
         navigateTo('/login');
     }
 };
+
+const checkItem = async ()=>{
+    if (!CheckCookie()){
+        navigateTo('/login');
+    }
+    console.log("show item");
+}
+const Buying = async (item)=>{
+    if (!CheckCookie()){
+        navigateTo('/login');
+    }
+    console.log("Buy item: ",item);
+    Item.value.push(item);
+} 
+const Cancle = async (item)=>{
+    if (!CheckCookie()){
+        navigateTo('/login');
+    }
+    console.log("Cancle item: ",item);
+}
 </script>
 
 <template>
-    <TheHeader :username="name" @logout="checkLogout" @auth="checkAuth"/>
+    <TheHeader :username="name" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"  @cancle="Cancle"/>
     <section class="bg-white max-w-screen-lg m-auto px-3">
         <!-- Part of showing product  -->
-         <BaseCardList class="p-6" :product="pd" />
+         <BaseCardList class="p-6" :product="pd" @buy="Buying" />
     </section>
 </template>
