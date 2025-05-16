@@ -14,6 +14,7 @@
     "@pinia/nuxt": "^0.10.1",
     "@tailwindcss/postcss": "^4.0.14",
     "@vee-validate/nuxt": "^4.15.0",
+    "click-outside-vue3": "^4.0.1",
     "nuxt": "^3.16.1",
     "pinia": "^3.0.1",
     "vue": "latest",
@@ -32,6 +33,6 @@
   "author": "",
   "license": "ISC",
   "overrides": {
-  "vue": "latest"
-}
+    "vue": "latest"
+  }
 }

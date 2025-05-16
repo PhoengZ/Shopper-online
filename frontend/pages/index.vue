@@ -10,7 +10,30 @@ let pd = ref([{name:'IPhone13',des:'The iPhone is a sleek, high-performance smar
 useHead({
     title:"Shopper-online",
 });
-let Item = ref([]);
+let Item = ref([
+  {
+    name: "IPhone13",
+    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
+    price: 1000,
+    id: 1,
+    quantity: 1
+  },
+  {
+    name: "IPhone14",
+    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
+    price: 2000,
+    id: 2,
+    quantity: 2
+  },
+  {
+    name: "IPhone15",
+    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
+    price: 3000,
+    id: 3,
+    quantity: 5
+  }
+]);
+
 const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
@@ -53,14 +76,17 @@ const Buying = async (item)=>{
     if (!CheckCookie()){
         navigateTo('/login');
     }
-    console.log("Buy item: ",item);
+    // console.log("Buy item: ",item);
     Item.value.push(item);
 } 
 const Cancle = async (item)=>{
     if (!CheckCookie()){
         navigateTo('/login');
     }
-    console.log("Cancle item: ",item);
+    // console.log("Cancle item: ",item);
+}
+const handleOutside = ()=>{
+    showList.value = false;
 }
 </script>
 
@@ -70,5 +96,5 @@ const Cancle = async (item)=>{
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" />
     </section>
-    <CartForm v-if="showList"/>
+    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside"/>
 </template>
