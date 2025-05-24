@@ -17,3 +17,11 @@ export function registerApi(username,password){
        }
     });
 }
+export function validateToken(token){
+    return useFetchAPI('/validate',{
+        method:'post',
+        body:{
+            token:token
+        }
+    })
+}
