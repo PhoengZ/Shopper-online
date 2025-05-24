@@ -2,9 +2,10 @@ package routes
 
 import (
 	"backend/controllers"
-	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-func RegisterValidateRoutes() {
-	http.HandleFunc("/validate", controllers.ValidToken)
+func RegisterValidateRoutes(r *mux.Router) {
+	r.HandleFunc("/validate", controllers.ValidToken).Methods("POST")
 }

@@ -88,7 +88,7 @@ func addItemOnCart(id string, item map[string]interface{}) error {
 	}
 	productID, ok := item["id"].(string)
 	if !ok {
-		return errors.New("Invalid to decode productID")
+		return errors.New("invalid to decode productID")
 	}
 	found := false
 	var quantity int

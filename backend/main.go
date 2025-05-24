@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"github.com/rs/cors"
 )
@@ -17,16 +18,17 @@ func main() {
 		fmt.Println("Error loading .env file")
 		return
 	}
+	r := mux.NewRouter()
 	config.ConnectDB()
-	routes.RegisterUserRoutes()
-	routes.RegisterProductRoutes()
-	routes.RegisterValidateRoutes()
+	routes.RegisterUserRoutes(r)
+	routes.RegisterProductRoutes(r)
+	routes.RegisterValidateRoutes(r)
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
 		AllowedHeaders: []string{"Content-Type"},
 	})
-	handler := c.Handler(http.DefaultServeMux)
+	handler := c.Handler(r)
 	port := os.Getenv("PORT")
 	fmt.Println("Server is running on port ", port)
 	if err := http.ListenAndServe(":"+port, handler); err != nil {

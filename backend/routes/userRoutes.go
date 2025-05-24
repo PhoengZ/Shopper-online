@@ -4,11 +4,13 @@ import (
 	"backend/controllers"
 	"backend/middlewares"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-func RegisterUserRoutes() {
-	http.HandleFunc("/auth/login", controllers.LoginUser)
-	http.HandleFunc("/auth/register", controllers.RegisterationUser)
-	http.HandleFunc("/cartList", controllers.GetCartList)
-	http.Handle("/profile", middlewares.AuthMiddleware(http.HandlerFunc(controllers.ProtectedRoute)))
+func RegisterUserRoutes(r *mux.Router) {
+	r.HandleFunc("/auth/login", controllers.LoginUser).Methods("POST")
+	r.HandleFunc("/auth/register", controllers.RegisterationUser).Methods("POST")
+	r.HandleFunc("/cartList", controllers.GetCartList).Methods("GET")
+	r.Handle("/profile", middlewares.AuthMiddleware(http.HandlerFunc(controllers.ProtectedRoute))).Methods("GET")
 }
