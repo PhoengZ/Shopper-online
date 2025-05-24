@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func ProtectedRoutwe(w http.ResponseWriter, r *http.Request) {
+func ProtectedRoute(w http.ResponseWriter, r *http.Request) {
 	userID := r.Header.Get("userID")
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Hello, " + userID})
 }

@@ -1,54 +1,19 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
+import { getProduct } from '~/repositories/product';
 definePageMeta({
     layout:false,
 });
 let showList = ref(false);
-let pd = ref([
-  {
-    name: "IPhone13",
-    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
-    price: 1000,
-    id: 1,
-  },
-  {
-    name: "IPhone14",
-    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
-    price: 2000,
-    id: 2,
-  },
-  {
-    name: "IPhone15",
-    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
-    price: 3000,
-    id: 3,
-  }
-]);
 
-let Item = ref([
-  {
-    name: "IPhone13",
-    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
-    price: 1000,
-    id: 1,
-    quantity: 1
-  },
-  {
-    name: "IPhone14",
-    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
-    price: 2000,
-    id: 2,
-    quantity: 2
-  },
-  {
-    name: "IPhone15",
-    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
-    price: 3000,
-    id: 3,
-    quantity: 5
-  }
-]);
+const { data: products, error } = await getProduct();
+const pd = ref(products.value || []);
 
+if (error.value) {
+  console.error('Failed to fetch products', error.value);
+}
+
+let Item = ref([]);
 const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
@@ -99,6 +64,7 @@ const Buying = async (item)=>{
             return;
         }
     }
+    item["quantity"] = 1;
     Item.value.push(item);
 } 
 const Cancle = async (item)=>{
@@ -125,7 +91,7 @@ const handleOutside = ()=>{
 </script>
 
 <template>
-    <TheHeader :username="name" :openBlure="showList" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"  @cancle="Cancle"/>
+    <TheHeader :username="name" :openBlure="showList" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" />
