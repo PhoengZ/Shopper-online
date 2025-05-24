@@ -2,7 +2,7 @@
 defineProps({
     model:Object
 });
-defineEmits(['cancle','buy'])
+defineEmits(['buy'])
 
 </script>
 
@@ -14,10 +14,10 @@ defineEmits(['cancle','buy'])
             <h4 class=" font-bold">{{model.name}}</h4>
             <p class=" w-full">{{model.des}}</p>
         </div>
-        <div class=" mt-2 flex justify-between w-full">
+        <div class=" mt-2 flex w-full">
             <!-- Button + items -->
-            <BaseButton class=" font-bold" size="small" theme="third"  @click="$emit('cancle',model.name)">-</BaseButton>
-            <BaseButton class=" font-bold" size="small" theme="second" @click="$emit('buy',model.name)">+</BaseButton>
+            <!-- <BaseButton class=" font-bold" size="small" theme="third"  @click="$emit('cancle',model.name)">-</BaseButton> -->
+            <BaseButton class=" font-bold ml-auto" size="small" theme="second" @click="$emit('buy',model)">+</BaseButton>
             <!-- Button - items -->
         </div>
     </div>
