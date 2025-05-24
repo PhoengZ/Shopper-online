@@ -1,14 +1,109 @@
-# Shopper-online
-This is an online shopping web application built using Vue.js, Nuxt.js, and TailwindCSS for the frontend, and Node.js, Express.js, and MongoDB for the backend. The application allows users to browse and purchase items, manage their shopping cart, and make orders securely.
-## Features
-Frontend:
-1. User-friendly interface built with Vue.js and Nuxt.js.  
-2. Responsive design using TailwindCSS for a modern look and feel.  
-3. Browse products and view detailed product pages.
+# Shopper Online
 
-Backend:
-1. RESTful API built with Node.js and Express.js.  
-2. CRUD operations for products and orders.  
-3. Interaction with MongoDB for storing user data, product information, and orders.
-## TechStack
-<p align="left"> <a href="https://www.w3schools.com/css/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/css3/css3-original-wordmark.svg" alt="css3" width="40" height="40"/> </a> </a> <a href="https://expressjs.com" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/express/express-original-wordmark.svg" alt="express" width="40" height="40"/> </a> <a href="https://www.w3.org/html/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/html5/html5-original-wordmark.svg" alt="html5" width="40" height="40"/> </a> <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/javascript/javascript-original.svg" alt="javascript" width="40" height="40"/> </a> <a href="https://www.mongodb.com/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/mongodb/mongodb-original-wordmark.svg" alt="mongodb" width="40" height="40"/> </a> <a href="https://nodejs.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/nodejs/nodejs-original-wordmark.svg" alt="nodejs" width="40" height="40"/> </a> <a href="https://www.python.org" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/python/python-original.svg" alt="python" width="40" height="40"/> </a> <a href="https://tailwindcss.com/" target="_blank" rel="noreferrer"> <img src="https://www.vectorlogo.zone/logos/tailwindcss/tailwindcss-icon.svg" alt="tailwind" width="40" height="40"/> </a> <a href="https://vuejs.org/" target="_blank" rel="noreferrer"> <img src="https://raw.githubusercontent.com/devicons/devicon/master/icons/vuejs/vuejs-original-wordmark.svg" alt="vuejs" width="40" height="40"/> </a> </p>
+**Shopper Online** is a full-stack e-commerce web application designed to provide users with a seamless online shopping experience. The application allows users to browse products, manage their shopping cart, and place orders securely.
+
+## Features
+
+### Frontend
+
+* **User-Friendly Interface**: Built with Vue.js and Nuxt.js to ensure a dynamic and responsive user experience.
+* **Responsive Design**: Utilizes TailwindCSS for a modern and mobile-friendly layout.
+* **Product Browsing**: Users can browse through a catalog of products and view detailed information on each product page.
+
+### Backend
+
+* **RESTful API**: Developed using Go (Golang) to handle all server-side operations.
+* **Database Management**: Employs MongoDB for efficient and scalable data storage.
+* **Secure Transactions**: Implements secure methods for user authentication and order processing.
+
+## Technologies Used
+
+* **Frontend**:
+
+  * [Vue.js](https://vuejs.org/)
+  * [Nuxt.js](https://nuxtjs.org/)
+  * [TailwindCSS](https://tailwindcss.com/)
+
+* **Backend**:
+
+  * [Go (Golang)](https://golang.org/)
+  * [MongoDB](https://www.mongodb.com/)
+
+## Getting Started
+
+### Prerequisites
+
+* **Node.js**: Ensure you have Node.js installed on your machine. You can download it from [here](https://nodejs.org/).
+* **Go**: Install Go from the official website [here](https://golang.org/dl/).
+* **MongoDB**: Install MongoDB and ensure it's running. Instructions can be found [here](https://docs.mongodb.com/manual/installation/).
+
+### Installation
+
+1. **Clone the Repository**:
+
+   ```bash
+   git clone https://github.com/PhoengZ/Shopper-online.git
+   cd Shopper-online
+   ```
+
+2. **Install Backend Dependencies**:
+
+   ```bash
+   cd backend
+   go mod download
+   ```
+
+3. **Install Frontend Dependencies**:
+
+   ```bash
+   cd ../frontend
+   npm install
+   ```
+
+### Running the Application
+
+1. **Start the Backend Server**:
+
+   ```bash
+   cd backend
+   go run main.go
+   ```
+
+2. **Start the Frontend Server**:
+
+   ```bash
+   cd ../frontend
+   npm run dev
+   ```
+
+3. **Access the Application**:
+
+   Open your browser and navigate to `http://localhost:3000` to view the application.
+
+## Project Structure
+
+```
+Shopper-online/
+├── backend/           # Go backend
+│   ├── controllers/   # Route controllers
+│   ├── models/        # Data models
+│   ├── routes/        # API routes
+│   └── main.go        # Main application file
+├── frontend/          # Nuxt.js frontend
+│   ├── components/    # Vue.js components
+│   ├── pages/         # Nuxt.js pages
+│   └── nuxt.config.js # Nuxt.js configuration
+└── README.md          # Project documentation
+```
+
+## Contributing
+
+Contributions are welcome! Please fork the repository and submit a pull request for any enhancements or bug fixes.
+
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+For more details, visit the [Shopper-online GitHub repository](https://github.com/PhoengZ/Shopper-online/tree/main).
