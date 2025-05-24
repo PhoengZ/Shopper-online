@@ -8,3 +8,11 @@ export function getProductByID (id){
         method:'get'
     })
 }
+export function getProductBySearching (data){
+    return useFetchAPI("/product",{
+        method:'get',
+        body:{
+            data:data
+        }
+    })
+}

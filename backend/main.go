@@ -20,6 +20,7 @@ func main() {
 	config.ConnectDB()
 	routes.RegisterUserRoutes()
 	routes.RegisterProductRoutes()
+	routes.RegisterValidateRoutes()
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},

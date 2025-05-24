@@ -1,5 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
+import { validateToken } from '~/repositories/auth';
 import { getProduct } from '~/repositories/product';
 definePageMeta({
     layout:false,
@@ -12,27 +13,20 @@ const pd = ref(products.value || []);
 if (error.value) {
   console.error('Failed to fetch products', error.value);
 }
-
 let Item = ref([]);
 const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
-if (token.value){
-    name.value = user.Username;
-}
-onMounted(async ()=>{
-    if (token.value){
+const { data: validateData, error: validateError } = await validateToken(token.value)
+const isValidToken = computed(() => validateData.value?.message === 'Valid')
+if (isValidToken)name.value = user.Username
+onMounted(()=>{
+    if (isValidToken){
         name.value = user.Username;
     }
 })
-function CheckCookie (){
-    if (!token.value){
-        return false;
-    }
-    return true;
-}
-const checkLogout = async ()=>{
-    if (CheckCookie()){
+const checkLogout = ()=>{
+    if (isValidToken.value){
         token.value = null;
         name.value = '';
         user.Username = '';
@@ -40,23 +34,23 @@ const checkLogout = async ()=>{
     }
 }
 
-const checkAuth = async ()=>{
-    if (!CheckCookie()){
+const checkAuth = ()=>{
+    console.log(isValidToken.value);
+    if (!isValidToken.value){
         navigateTo('/login');
     }
 };
 
-const checkItem = async ()=>{
-    if (!CheckCookie()){
+const checkItem = ()=>{
+    if (!isValidToken.value){
         navigateTo('/login');
     }
     showList.value = !showList.value;
 }
-const Buying = async (item)=>{
-    if (!CheckCookie()){
+const Buying = (item)=>{
+    if (!isValidToken.value){
         navigateTo('/login');
     }
-    console.log("adding Item");
     let l = Item.value.length;
     for (let i = 0;i<l;i++){
         if (Item.value[i].id == item.id){
@@ -67,12 +61,11 @@ const Buying = async (item)=>{
     item["quantity"] = 1;
     Item.value.push(item);
 } 
-const Cancle = async (item)=>{
-    if (!CheckCookie()){
+const Cancle = (item)=>{
+    if (!isValidToken.value){
         navigateTo('/login');
     }
     let l = Item.value.length;
-    console.log("removing Item");
     for (let i = 0;i<l;i++){
         if (Item.value[i].id == item.id){
             if (Item.value[i].quantity == 1){
