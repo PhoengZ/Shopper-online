@@ -7,5 +7,5 @@ import (
 
 func RegisterProductRoutes() {
 	http.HandleFunc("/products", controllers.GetProducts)
-	http.HandleFunc("/products/:id", controllers.GetProductByID)
+	http.HandleFunc("/products/{id}", controllers.GetProductByID)
 }

@@ -35,7 +35,6 @@ const checkLogout = ()=>{
 }
 
 const checkAuth = ()=>{
-    console.log(isValidToken.value);
     if (!isValidToken.value){
         navigateTo('/login');
     }

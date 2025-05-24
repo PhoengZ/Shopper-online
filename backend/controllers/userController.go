@@ -32,13 +32,12 @@ func LoginUser(w http.ResponseWriter, r *http.Request) {
 }
 func RegisterationUser(w http.ResponseWriter, r *http.Request) {
 	var user models.User
-
 	err := json.NewDecoder(r.Body).Decode(&user)
 	if err != nil {
 		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid payload"})
 		return
 	}
-
+	user.CartList = []map[string]interface{}{}
 	err = services.RegisterUser(user)
 	if err != nil {
 		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
@@ -46,4 +45,21 @@ func RegisterationUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.JSONResponse(w, http.StatusCreated, map[string]string{"message": "User registered successfully"})
+}
+
+func GetCartList(w http.ResponseWriter, r *http.Request) {
+	var object struct {
+		Id string `json:"id"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&object)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": err.Error()})
+		return
+	}
+	cartList, err := services.GetCartListByID(object.Id)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, cartList)
 }

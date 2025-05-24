@@ -29,5 +29,7 @@ func main() {
 	handler := c.Handler(http.DefaultServeMux)
 	port := os.Getenv("PORT")
 	fmt.Println("Server is running on port ", port)
-	http.ListenAndServe(":"+port, handler)
+	if err := http.ListenAndServe(":"+port, handler); err != nil {
+		fmt.Println("Failed to start server:", err)
+	}
 }
