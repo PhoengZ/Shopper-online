@@ -4,12 +4,27 @@ definePageMeta({
     layout:false,
 });
 let showList = ref(false);
-let pd = ref([{name:'IPhone13',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'},
-{name:'IPhone14',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'},
-{name:'IPhone15',des:'The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.'}]);
-useHead({
-    title:"Shopper-online",
-});
+let pd = ref([
+  {
+    name: "IPhone13",
+    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
+    price: 1000,
+    id: 1,
+  },
+  {
+    name: "IPhone14",
+    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
+    price: 2000,
+    id: 2,
+  },
+  {
+    name: "IPhone15",
+    des: "The iPhone is a sleek, high-performance smartphone with advanced cameras, a powerful chip, and an intuitive iOS experience.",
+    price: 3000,
+    id: 3,
+  }
+]);
+
 let Item = ref([
   {
     name: "IPhone13",
@@ -76,14 +91,33 @@ const Buying = async (item)=>{
     if (!CheckCookie()){
         navigateTo('/login');
     }
-    // console.log("Buy item: ",item);
+    console.log("adding Item");
+    let l = Item.value.length;
+    for (let i = 0;i<l;i++){
+        if (Item.value[i].id == item.id){
+            Item.value[i].quantity += 1;
+            return;
+        }
+    }
     Item.value.push(item);
 } 
 const Cancle = async (item)=>{
     if (!CheckCookie()){
         navigateTo('/login');
     }
-    // console.log("Cancle item: ",item);
+    let l = Item.value.length;
+    console.log("removing Item");
+    for (let i = 0;i<l;i++){
+        if (Item.value[i].id == item.id){
+            if (Item.value[i].quantity == 1){
+                Item.value.splice(i,1);
+                return;
+            }
+            Item.value[i].quantity -= 1;
+            return;
+        }
+    }
+    console.log("Item not found");
 }
 const handleOutside = ()=>{
     showList.value = false;
@@ -96,5 +130,5 @@ const handleOutside = ()=>{
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" />
     </section>
-    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside"/>
+    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @add="Buying" @remove="Cancle"/>
 </template>

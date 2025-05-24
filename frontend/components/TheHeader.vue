@@ -3,7 +3,7 @@ import BaseSearch from './BaseSearch.vue';
 import BaseBadgeList from './BaseBadgeList.vue';
 import BaseOption from './BaseOption.vue';
 
-defineEmits(['auth','logout','checkItem','cancle']);
+defineEmits(['auth','logout','checkItem']);
 
 const prop = defineProps({
     openFilter:Boolean,
