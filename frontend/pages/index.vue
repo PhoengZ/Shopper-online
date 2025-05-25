@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
-import { validateToken } from '~/repositories/auth';
+import { addItem, getCartItem, validateToken } from '~/repositories/auth';
 import { getProduct } from '~/repositories/product';
 definePageMeta({
     layout:false,
@@ -17,12 +17,17 @@ let Item = ref([]);
 const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
-const { data: validateData, error: validateError } = await validateToken(token.value)
+const userID = ref('');
+const {error:err, data: validateData} = await validateToken(token.value)
 const isValidToken = computed(() => validateData.value?.message === 'Valid')
-if (isValidToken)name.value = user.Username
+if (isValidToken){
+    name.value = user.Username
+    userID.value = user.userID;
+}
 onMounted(()=>{
     if (isValidToken){
         name.value = user.Username;
+        userID.value = user.userID;
     }
 })
 const checkLogout = ()=>{
@@ -30,6 +35,7 @@ const checkLogout = ()=>{
         token.value = null;
         name.value = '';
         user.Username = '';
+        userID.value = '';
         navigateTo('/login');
     }
 }
@@ -40,25 +46,32 @@ const checkAuth = ()=>{
     }
 };
 
-const checkItem = ()=>{
+const checkItem = async ()=>{
     if (!isValidToken.value){
         navigateTo('/login');
     }
+    if (showList.value){
+        showList.value = !showList.value
+        return 
+    }
+    const {products} = await getCartItem(userID.value);
+    Item.value = products
     showList.value = !showList.value;
 }
-const Buying = (item)=>{
+const Buying = async (item)=>{
     if (!isValidToken.value){
         navigateTo('/login');
     }
-    let l = Item.value.length;
-    for (let i = 0;i<l;i++){
-        if (Item.value[i].id == item.id){
-            Item.value[i].quantity += 1;
-            return;
-        }
+    for (let key in item) {
+        console.log(key, item[key]);
     }
-    item["quantity"] = 1;
-    Item.value.push(item);
+    const {message} = await addItem(item,userID.value)
+    if (message != "Success adding item"){
+        console.log("Error adding item");
+        return 
+    }
+    const {products} = await getCartItem(userID.value);
+    Item.value = products
 } 
 const Cancle = (item)=>{
     if (!isValidToken.value){

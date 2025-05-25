@@ -56,7 +56,7 @@ func RegisterUser(user models.User) error {
 	return err
 }
 
-func GetCartListByID(id string) ([]map[string]interface{}, error) {
+func GetCartListByID(id string) ([]models.Item, error) {
 	collection := config.GetCollection("User")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
@@ -67,12 +67,12 @@ func GetCartListByID(id string) ([]map[string]interface{}, error) {
 	var user models.User
 	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&user)
 	if err != nil {
-		return []map[string]interface{}{}, err
+		return []models.Item{}, err
 	}
 	return user.CartList, nil
 }
 
-func addItemOnCart(id string, item map[string]interface{}) error {
+func AddItemOnCart(id string, item models.Item) error {
 	collection := config.GetCollection("User")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
@@ -86,40 +86,20 @@ func addItemOnCart(id string, item map[string]interface{}) error {
 	if err != nil {
 		return err
 	}
-	productID, ok := item["id"].(string)
-	if !ok {
-		return errors.New("invalid to decode productID")
-	}
 	found := false
-	var quantity int
 	l := len(user.CartList)
 	for i := 0; i < l; i++ {
-		if user.CartList[i]["id"] == productID {
+		if user.CartList[i].ID == item.ID {
+			qty := user.CartList[i].Quantity
+			user.CartList[i].Quantity = qty + 1
 			found = true
-			quantity = user.CartList[i]["quantity"].(int) + 1
 			break
 		}
 	}
-	if found {
-		filter := bson.M{
-			"_id":         objID,
-			"cartlist.id": productID,
-		}
-		update := bson.M{
-			"$inc": bson.M{
-				"cartlist.$.quantity": quantity,
-			},
-		}
-		_, err = collection.UpdateOne(ctx, filter, update)
-	} else {
-		item["quantity"] = 1
-		update := bson.M{
-			"$push": bson.M{
-				"cartlist": item,
-			},
-		}
-		_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, update)
+	if !found {
+		user.CartList = append(user.CartList, item)
 	}
+	_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$set": bson.M{"cartlist": user.CartList}})
 	if err != nil {
 		return err
 	}

@@ -6,6 +6,8 @@ import (
 	"backend/utils/response"
 	"encoding/json"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func ProtectedRoute(w http.ResponseWriter, r *http.Request) {
@@ -37,7 +39,7 @@ func RegisterationUser(w http.ResponseWriter, r *http.Request) {
 		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid payload"})
 		return
 	}
-	user.CartList = []map[string]interface{}{}
+	user.CartList = []models.Item{}
 	err = services.RegisterUser(user)
 	if err != nil {
 		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
@@ -48,18 +50,28 @@ func RegisterationUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetCartList(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	Id := vars["id"]
+	cartList, err := services.GetCartListByID(Id)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"products": cartList})
+}
+func AddItemToCart(w http.ResponseWriter, r *http.Request) {
 	var object struct {
-		Id string `json:"id"`
+		Id      string      `json:"id"`
+		Product models.Item `json:"product"`
 	}
 	err := json.NewDecoder(r.Body).Decode(&object)
 	if err != nil {
 		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": err.Error()})
 		return
 	}
-	cartList, err := services.GetCartListByID(object.Id)
+	err = services.AddItemOnCart(object.Id, object.Product)
 	if err != nil {
 		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
-		return
 	}
-	response.JSONResponse(w, http.StatusOK, cartList)
+	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success adding item"})
 }
