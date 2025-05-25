@@ -72,6 +72,53 @@ func GetCartListByID(id string) ([]models.Item, error) {
 	return user.CartList, nil
 }
 
+func RemoveItemOnCart(userID, itemID string) error {
+	collection := config.GetCollection("User")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+
+	objID, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		return err
+	}
+	var user models.User
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&user)
+	if err != nil {
+		return err
+	}
+	l := len(user.CartList)
+	found := false
+	for i := 0; i < l; i++ {
+		if user.CartList[i].ID == itemID {
+			found = true
+			user.CartList[i].Quantity--
+			if user.CartList[i].Quantity <= 0 {
+				arr := []models.Item{}
+				for j := 0; j < i; j++ {
+					arr = append(arr, user.CartList[j])
+				}
+				for j := i + 1; j < l; j++ {
+					arr = append(arr, user.CartList[j])
+				}
+				user.CartList = arr
+			}
+			break
+		}
+	}
+	if !found {
+		return errors.New("not found item")
+	}
+	if user.CartList == nil {
+		user.CartList = []models.Item{}
+	}
+	_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$set": bson.M{"cartlist": user.CartList}})
+	if err != nil {
+		return err
+	}
+	return nil
+
+}
+
 func AddItemOnCart(id string, item models.Item) error {
 	collection := config.GetCollection("User")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)

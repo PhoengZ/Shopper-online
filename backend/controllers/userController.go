@@ -75,3 +75,21 @@ func AddItemToCart(w http.ResponseWriter, r *http.Request) {
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success adding item"})
 }
+
+func RemoveItemOnCart(w http.ResponseWriter, r *http.Request) {
+	var object struct {
+		UserId string `json:"userId"`
+		ItemId string `json:"itemId"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&object)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": err.Error()})
+		return
+	}
+	err = services.RemoveItemOnCart(object.UserId, object.ItemId)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success removing"})
+}

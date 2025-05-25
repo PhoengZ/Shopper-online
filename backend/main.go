@@ -25,8 +25,8 @@ func main() {
 	routes.RegisterValidateRoutes(r)
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
-		AllowedHeaders: []string{"Content-Type"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowedHeaders: []string{"Content-Type", "Authorization"},
 	})
 	handler := c.Handler(r)
 	port := os.Getenv("PORT")

@@ -11,7 +11,8 @@ import (
 func RegisterUserRoutes(r *mux.Router) {
 	r.HandleFunc("/auth/login", controllers.LoginUser).Methods("POST")
 	r.HandleFunc("/auth/register", controllers.RegisterationUser).Methods("POST")
-	r.HandleFunc("/cartList/{id}", controllers.GetCartList).Methods("GET")
-	r.HandleFunc("/addCartItem", controllers.AddItemToCart).Methods("POST")
+	r.Handle("/addCartItem", middlewares.AuthMiddleware(http.HandlerFunc(controllers.AddItemToCart))).Methods("POST")
+	r.Handle("/removeCartItem", middlewares.AuthMiddleware(http.HandlerFunc(controllers.RemoveItemOnCart))).Methods("PATCH")
+	r.Handle("/cartList/{id}", middlewares.AuthMiddleware(http.HandlerFunc(controllers.GetCartList))).Methods("GET")
 	r.Handle("/profile", middlewares.AuthMiddleware(http.HandlerFunc(controllers.ProtectedRoute))).Methods("GET")
 }

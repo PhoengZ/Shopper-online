@@ -25,17 +25,35 @@ export function validateToken(token){
         }
     })
 }
-export function getCartItem(id){
+export function getCartItem(id,token){
     return useFetchAPIMounted(`/cartList/${id}`,{
-        method:'get'
+        method:'get',
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
     })
 }
-export function addItem(product,id){
+export function addItem(product,id,token){
     return useFetchAPIMounted('/addCartItem',{
         method:'post',
+        headers:{
+            Authorization:`Bearer ${token}`
+        },
         body:{
             id:id,
             product:product
+        }
+    })
+}
+export function removeItem(userId, productId,token){
+    return useFetchAPIMounted('/removeCartItem',{
+        method:'patch',
+        headers:{
+            Authorization:`Bearer ${token}`
+        },
+        body:{
+            userId:userId,
+            itemId:productId
         }
     })
 }
