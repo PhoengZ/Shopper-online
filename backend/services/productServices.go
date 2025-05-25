@@ -2,11 +2,13 @@ package services
 
 import (
 	"context"
+	"errors"
 	"time"
 
 	"backend/config"
 
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 func GetProducts() ([]map[string]interface{}, error) {
@@ -34,8 +36,12 @@ func GetProductByID(productID string) (map[string]interface{}, error) {
 	collection := config.GetCollection("Product")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
+	objID, err := primitive.ObjectIDFromHex(productID)
+	if err != nil {
+		return nil, errors.New("invalid user ID format")
+	}
 	var product map[string]interface{}
-	err := collection.FindOne(ctx, bson.M{"_id": productID}).Decode(&product)
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&product)
 	if err != nil {
 		return map[string]interface{}{}, err
 	}

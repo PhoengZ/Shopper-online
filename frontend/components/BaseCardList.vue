@@ -5,7 +5,14 @@ defineProps({
 const emit = defineEmits(['buy']);
 
 const handleBuy = (item)=>{
-    emit('buy',item);
+    const object = {
+        "id":item._id,
+        "name":item.name,
+        "price":item.price,
+        "url":item.url,
+        "quantity":1
+    }
+    emit('buy',object);
 };
 
 

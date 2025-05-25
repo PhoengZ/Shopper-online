@@ -4,6 +4,8 @@ import (
 	"backend/services"
 	"backend/utils/response"
 	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
 func GetProducts(w http.ResponseWriter, r *http.Request) {
@@ -15,7 +17,8 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 	response.JSONResponse(w, http.StatusOK, listProduct)
 }
 func GetProductByID(w http.ResponseWriter, r *http.Request) {
-	ProductID := r.URL.Query().Get("id")
+	vars := mux.Vars(r)
+	ProductID := vars["id"]
 	product, err := services.GetProductByID(ProductID)
 	if err != nil {
 		if err.Error() == "not_found" {

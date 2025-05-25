@@ -15,7 +15,7 @@ defineEmits(['buy'])
             <p class=" w-full">{{model.description}}</p>
         </div>
         <div class=" mt-2 flex w-full justify-center gap-2">
-            <p class=" text-2xl font-bold">{{model.price}}</p>
+            <p class=" text-2xl font-bold">{{model.price}}$</p>
             <BaseButton class=" font-bold ml-auto" size="small" theme="second" @click="$emit('buy',model)">+</BaseButton>
         </div>
     </div>

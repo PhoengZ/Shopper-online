@@ -2,10 +2,11 @@ package routes
 
 import (
 	"backend/controllers"
-	"net/http"
+
+	"github.com/gorilla/mux"
 )
 
-func RegisterProductRoutes() {
-	http.HandleFunc("/products", controllers.GetProducts)
-	http.HandleFunc("/products/:id", controllers.GetProductByID)
+func RegisterProductRoutes(r *mux.Router) {
+	r.HandleFunc("/products", controllers.GetProducts).Methods("GET")
+	r.HandleFunc("/products/{id}", controllers.GetProductByID).Methods("GET")
 }

@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
-import { validateToken } from '~/repositories/auth';
+import { addItem, getCartItem, removeItem, validateToken } from '~/repositories/auth';
 import { getProduct } from '~/repositories/product';
 definePageMeta({
     layout:false,
@@ -17,12 +17,17 @@ let Item = ref([]);
 const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
-const { data: validateData, error: validateError } = await validateToken(token.value)
+const userID = ref('');
+const {error:err, data: validateData} = await validateToken(token.value)
 const isValidToken = computed(() => validateData.value?.message === 'Valid')
-if (isValidToken)name.value = user.Username
+if (isValidToken){
+    name.value = user.Username
+    userID.value = user.userID;
+}
 onMounted(()=>{
     if (isValidToken){
         name.value = user.Username;
+        userID.value = user.userID;
     }
 })
 const checkLogout = ()=>{
@@ -30,53 +35,73 @@ const checkLogout = ()=>{
         token.value = null;
         name.value = '';
         user.Username = '';
+        userID.value = '';
         navigateTo('/login');
+        return 
     }
 }
 
 const checkAuth = ()=>{
-    console.log(isValidToken.value);
     if (!isValidToken.value){
         navigateTo('/login');
+        return 
     }
 };
 
-const checkItem = ()=>{
+const checkItem = async ()=>{
     if (!isValidToken.value){
         navigateTo('/login');
+        return 
     }
-    showList.value = !showList.value;
+    if (showList.value){
+        showList.value = !showList.value
+        return 
+    }
+    try{
+        const {products} = await getCartItem(userID.value,token.value);
+        Item.value = products
+        showList.value = !showList.value;
+    }catch(err){
+        if (err.response?.status == 401){
+            navigateTo('/login')
+        }else{
+            console.error("Unexpected error:", err);
+        }
+    }
 }
-const Buying = (item)=>{
+const Buying = async (item)=>{
     if (!isValidToken.value){
         navigateTo('/login');
+        return 
     }
-    let l = Item.value.length;
-    for (let i = 0;i<l;i++){
-        if (Item.value[i].id == item.id){
-            Item.value[i].quantity += 1;
-            return;
+    try{
+        const {message} = await addItem(item,userID.value,token.value)
+        const {products} = await getCartItem(userID.value,token.value)
+        Item.value = products
+    }catch(err){
+        if (err.response?.status == 401){
+            navigateTo('/login')
+        }else{
+            console.error("Unexpected error:", err)
         }
     }
-    item["quantity"] = 1;
-    Item.value.push(item);
 } 
-const Cancle = (item)=>{
+const Cancle = async (item)=>{
     if (!isValidToken.value){
         navigateTo('/login');
+        return
     }
-    let l = Item.value.length;
-    for (let i = 0;i<l;i++){
-        if (Item.value[i].id == item.id){
-            if (Item.value[i].quantity == 1){
-                Item.value.splice(i,1);
-                return;
-            }
-            Item.value[i].quantity -= 1;
-            return;
+    try{
+        const {message} = await removeItem(userID.value,item.id,token.value)
+        const {products} = await getCartItem(userID.value,token.value)
+        Item.value = products
+    }catch(err){
+        if (err.response?.status == 401){
+            navigateTo('/login')
+        }else{
+            console.error("Unexpected error:", err)
         }
     }
-    console.log("Item not found");
 }
 const handleOutside = ()=>{
     showList.value = false;
