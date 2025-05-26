@@ -4,15 +4,12 @@ export function getProduct (){
     })
 }
 export function getProductByID (id){
-    return useFetchAPI(`/product/${id}`,{
+    return useFetchAPI(`/products/${id}`,{
         method:'get'
     })
 }
 export function getProductBySearching (data){
-    return useFetchAPI("/product",{
+    return useFetchAPIMounted(`/products?name=${data.name}&price=${data.price}&category=${data.category.join(",")}`,{
         method:'get',
-        body:{
-            data:data
-        }
     })
 }
