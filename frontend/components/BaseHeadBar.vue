@@ -24,8 +24,10 @@ const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
 <template>
     <div class="w-full h-auto bg-gray-500 mb-4 drop-shadow-lg flex justify-end px-5 py-2 hover:cursor-pointer">
         <div class=" relative flex flex-row gap-5 justify-center items-center">
-            <IconShoppingCart class="rounded-3xl bg-none hover:bg-gray-600" @click="handleItem"/>
-            <BaseButton class="flex justify-center items-center" size="small" theme="second" @click="handleClick">
+            <BaseButton @click="handleItem" size="small" theme="circular">
+                <IconShoppingCart />
+            </BaseButton>
+            <BaseButton class="flex justify-center items-center" size="small" theme="first" @click="handleClick">
                 <IconUser/>
                 <h4 class=" text-white">{{username === '' ? 'Sign-in':username}}</h4>
             </BaseButton>

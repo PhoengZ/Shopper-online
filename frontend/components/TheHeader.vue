@@ -37,6 +37,9 @@ const handleItem = (item)=>{
     val.value = item;
 }
 const val = ref("");
+const handleOutside = ()=>{
+    isShowed.value = false;
+}
 </script>
 <template>
     <BaseHeadBar :username="username" :is-show="isDrop" @logout="$emit('logout')" @is-dropuser="$emit('auth')" @checkItem="$emit('checkItem')"
@@ -48,7 +51,7 @@ const val = ref("");
         </div>
         <div class=" relative ">
             <BaseOption @open-filter="showFilter" :flag="!isShowed" class="hover:cursor-pointer"/>
-            <BaseTypeList v-if="isShowed" v-model:selectedItem="selectedItem" v-model:selectedSortOption="selectedSortOption"
+            <BaseTypeList v-if="isShowed" v-model:selectedItem="selectedItem" v-model:selectedSortOption="selectedSortOption"  v-click-outside="handleOutside"
              mode="screening" :product="prop.choiceItem" class=" absolute max-h-30 overflow-y-auto drop-shadow-lg z-10"></BaseTypeList>
         </div>
         <!-- this div is drop to center when i add something at abseBadgeList -->
