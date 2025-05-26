@@ -4,12 +4,27 @@ import (
 	"backend/services"
 	"backend/utils/response"
 	"net/http"
+	"strconv"
+	"strings"
 
 	"github.com/gorilla/mux"
 )
 
 func GetProducts(w http.ResponseWriter, r *http.Request) {
-	listProduct, err := services.GetProducts()
+	itemName := r.URL.Query().Get("name")
+	categoryParam := r.URL.Query().Get("category")
+	var category []string
+	if categoryParam == "" {
+		category = []string{}
+	} else {
+		category = strings.Split(categoryParam, ",")
+	}
+	Sprice := r.URL.Query().Get("price")
+	Iprice, err := strconv.ParseBool(Sprice)
+	if err != nil {
+		Iprice = true
+	}
+	listProduct, err := services.GetProducts(itemName, category, Iprice)
 	if err != nil {
 		response.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": "Failed to fetch products"})
 		return

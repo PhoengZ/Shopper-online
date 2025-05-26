@@ -1,10 +1,14 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
 import { addItem, getCartItem, removeItem, validateToken } from '~/repositories/auth';
-import { getProduct } from '~/repositories/product';
+import { getProduct, getProductBySearching } from '~/repositories/product';
+import { getCategories } from '../repositories/categories';
 definePageMeta({
     layout:false,
 });
+useHead({
+    title:"Shopper-Online"
+})
 let showList = ref(false);
 
 const { data: products, error } = await getProduct();
@@ -18,6 +22,18 @@ const token = useCookie('token');
 const user = useAuthStore();
 const name = ref('');
 const userID = ref('');
+let showSetting = ref(false);
+const choiceItem = ref([]);
+const {data:response, er, status} = await getCategories();
+if (status.value === 'error'){
+    console.error('Failed to fetch categories', er.value);
+    choiceItem.value = [];
+} else {
+    choiceItem.value = response.value.categories;
+    if (choiceItem.value[0] != "Price"){
+        choiceItem.value.unshift("Price")
+    }
+} 
 const {error:err, data: validateData} = await validateToken(token.value)
 const isValidToken = computed(() => validateData.value?.message === 'Valid')
 if (isValidToken){
@@ -46,6 +62,7 @@ const checkAuth = ()=>{
         navigateTo('/login');
         return 
     }
+    showSetting.value = !showSetting.value
 };
 
 const checkItem = async ()=>{
@@ -103,13 +120,21 @@ const Cancle = async (item)=>{
         }
     }
 }
+const SearchItem = async (block)=>{
+    try{
+        const object = await getProductBySearching(block)
+        pd.value = object
+    }catch(err){
+        console.error(err)
+    }
+}
 const handleOutside = ()=>{
     showList.value = false;
 }
 </script>
 
 <template>
-    <TheHeader :username="name" :openBlure="showList" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" />
