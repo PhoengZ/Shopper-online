@@ -56,6 +56,30 @@ func RegisterUser(user models.User) error {
 	return err
 }
 
+func GetProfile(id string) (map[string]interface{}, error) {
+	collection := config.GetCollection("User")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return map[string]interface{}{}, err
+	}
+
+	var user models.User
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&user)
+	if err != nil {
+		return map[string]interface{}{}, err
+	}
+	profile := map[string]interface{}{
+		"username": user.Username,
+		"address":  user.Address,
+		"coin":     user.Coin,
+		"history":  user.History,
+	}
+	return profile, nil
+}
+
 func GetCartListByID(id string) ([]models.Item, error) {
 	collection := config.GetCollection("User")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)

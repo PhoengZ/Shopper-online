@@ -16,7 +16,7 @@ export const differentVariant = (theme) => {
     case "third":
       return "bg-red-600 text-white hover:bg-red-700 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105";
     case "circular": // New circular theme
-      return "bg-purple-600 text-white hover:bg-purple-700 rounded-full w-12 h-12 flex items-center justify-center shadow-md transition duration-300 ease-in-out transform hover:scale-110";
+      return "bg-gray-300 text-white hover:bg-gray-400 rounded-full w-12 h-12 flex items-center justify-center shadow-md transition duration-300 ease-in-out transform hover:scale-110";
     case "ghost": // Renamed 'fourth' for clarity
       return "bg-transparent text-gray-700 hover:text-blue-600 hover:underline transition duration-300 ease-in-out";
     default:

@@ -10,9 +10,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func ProtectedRoute(w http.ResponseWriter, r *http.Request) {
-	userID := r.Header.Get("userID")
-	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Hello, " + userID})
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	Id := vars["id"]
+	profile, err := services.GetProfile(Id)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+	}
+	response.JSONResponse(w, http.StatusOK, profile)
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +45,7 @@ func RegisterationUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.CartList = []models.Item{}
+	user.History = []models.Item{}
 	err = services.RegisterUser(user)
 	if err != nil {
 		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
