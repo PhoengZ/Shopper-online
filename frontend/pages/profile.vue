@@ -1,5 +1,5 @@
 <script setup>
-import { getProfile, validateToken } from '~/repositories/auth'
+import { getProfile, updateProfile, validateToken } from '~/repositories/auth'
 import { useAuthStore } from '~/Stores/auth'
 
 definePageMeta({ layout: false })
@@ -45,7 +45,20 @@ const signOut = () =>{
 }
 const EditAddress = async ()=>{
   if (isEditAddress.value){
-
+    const object = {
+        "password":"",
+        "address":address.value,
+        "coin":0,
+        "history":{
+          
+        }
+    }
+    const {message}  = await updateProfile(userID.value, object, token.value)
+    if (message === 'Success updating profile'){
+      isEditAddress.value = !isEditAddress.value
+    }else{
+      console.error('Failed to update address', message)
+    }
   }else{
     isEditAddress.value = !isEditAddress.value
   }
@@ -71,7 +84,7 @@ const EditAddress = async ()=>{
           <textarea
             class="w-full h-24 border-2 border-gray-300 rounded-xl px-4 py-2 resize-none text-sm"
             placeholder="Enter your delivery address..."
-            :value="address"
+            v-model="address"
             :disabled="!isEditAddress"
           ></textarea>
         </div>
