@@ -6,13 +6,18 @@ const prop = defineProps({
     selectedItem:Array,
     selectedSortOption:Boolean
 });
-const emit = defineEmits(['logout','update:selectedItem','update:selectedSortOption']);
+const emit = defineEmits(['logout','update:selectedItem','update:selectedSortOption','profile']);
 
 const handleClick = (item)=>{
     if (item === 'Logout' && prop.mode === 'account'){
         emit('logout');
         return
     }
+    if (item === 'Profile' && prop.mode === 'account'){
+        emit('profile')
+        return
+    }
+
 }
 const selectedItem = ref(prop.selectedItem)
 const selectedSortOption = ref(prop.selectedSortOption)

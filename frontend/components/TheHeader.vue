@@ -3,7 +3,7 @@ import BaseSearch from './BaseSearch.vue';
 import BaseBadgeList from './BaseBadgeList.vue';
 import BaseOption from './BaseOption.vue';
 
-const emit = defineEmits(['auth','logout','checkItem','searchItem']);
+const emit = defineEmits(['auth','logout','checkItem','searchItem','profile']);
 
 const prop = defineProps({
     openFilter:Boolean,
@@ -42,7 +42,7 @@ const handleOutside = ()=>{
 }
 </script>
 <template>
-    <BaseHeadBar :username="username" :is-show="isDrop" @logout="$emit('logout')" @is-dropuser="$emit('auth')" @checkItem="$emit('checkItem')"
+    <BaseHeadBar :username="username" :is-show="isDrop" @profile="$emit('profile')" @logout="$emit('logout')" @is-dropuser="$emit('auth')" @checkItem="$emit('checkItem')"
     @auth="$emit('auth')" :class="openBlure ? 'blur-xs':''"/>
     <section class=" flex justify-center flex-row gap-5 items-start" :class="openBlure ? 'blur-xs':''">
         <div class=" flex flex-col w-2xl min-h-[50px]">
@@ -51,7 +51,7 @@ const handleOutside = ()=>{
         </div>
         <div class=" relative ">
             <BaseOption @open-filter="showFilter" :flag="!isShowed" class="hover:cursor-pointer"/>
-            <BaseTypeList v-if="isShowed"  v-model:selectedItem="selectedItem" v-model:selectedSortOption="selectedSortOption"  v-click-outside="handleOutside"
+            <BaseTypeList v-if="isShowed" v-model:selectedItem="selectedItem" v-model:selectedSortOption="selectedSortOption"  v-click-outside="handleOutside"
              mode="screening" :product="prop.choiceItem" class=" absolute max-h-30 overflow-y-auto drop-shadow-lg z-10"></BaseTypeList>
         </div>
         <!-- this div is drop to center when i add something at abseBadgeList -->

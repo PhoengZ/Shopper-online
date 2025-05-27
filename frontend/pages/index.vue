@@ -128,13 +128,20 @@ const SearchItem = async (block)=>{
         console.error(err)
     }
 }
+const handleProfile = ()=>{
+    if (!isValidToken.value){
+        navigateTo('/login');
+        return 
+    }
+    navigateTo('/profile');
+}
 const handleOutside = ()=>{
     showList.value = false;
 }
 </script>
 
 <template>
-    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" mode="main" />
