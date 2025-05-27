@@ -57,3 +57,26 @@ export function removeItem(userId, productId,token){
         }
     })
 }
+
+export function getProfile(id,token){
+    return useFetchAPI(`/auth/getProfile/${id}`,{
+        method:'get',
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    })
+}
+
+export function updateProfile(id,profile,token){
+    return useFetchAPIMounted('auth/updateProfile',{
+        method:'patch',
+        headers:{
+            Authorization:`Bearer ${token}`
+        },
+        body:{
+            id:id,
+            profile:profile
+        }
+    })
+
+}

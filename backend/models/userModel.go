@@ -6,6 +6,8 @@ type User struct {
 	Password string `json:"password" bson:"password"`
 	CartList []Item `json:"cartlist" bson:"cartlist"`
 	Coin     int    `json:"coin" bson:"coin"`
+	Address  string `json:"address" bson:"address"`
+	History  []Item `json:"history" bson:"history"`
 }
 type Item struct {
 	ID       string `json:"id" bson:"id"`

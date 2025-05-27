@@ -10,9 +10,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func ProtectedRoute(w http.ResponseWriter, r *http.Request) {
-	userID := r.Header.Get("userID")
-	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Hello, " + userID})
+func GetProfile(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	Id := vars["id"]
+	profile, err := services.GetProfile(Id)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+	}
+	response.JSONResponse(w, http.StatusOK, profile)
 }
 
 func LoginUser(w http.ResponseWriter, r *http.Request) {
@@ -40,6 +45,7 @@ func RegisterationUser(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	user.CartList = []models.Item{}
+	user.History = []models.Item{}
 	err = services.RegisterUser(user)
 	if err != nil {
 		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
@@ -92,4 +98,22 @@ func RemoveItemOnCart(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success removing"})
+}
+
+func UpdateProfile(w http.ResponseWriter, r *http.Request) {
+	var object struct {
+		Id      string                 `json:"id"`
+		Profile map[string]interface{} `json:"profile"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&object)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid request payload"})
+		return
+	}
+	err = services.UpdateProfile(object.Id, object.Profile)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "Failed to update profile"})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success updating profile"})
 }

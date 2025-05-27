@@ -7,17 +7,19 @@ export const differentButtonSize=(size)=>{
     }
 };
 
-export const differentVariant = (theme)=>{
-    switch (theme){
-        case "first":
-            return "bg-blue-500 text-white hover:bg-blue-600 rounded-md border-2";
-        case "second":
-            return "bg-green-500 text-white hover:bg-green-600 rounded-md border-2";
-        case "third":
-            return "bg-red-500 text-white hover:bg-red-600 rounded-md border-2";    
-        case "fourth":
-            return "bg-none text-gray-500 hover:underline";
-        default:
-            return "bg-gray-500 text-white hover:bg-gray-600 rounded-md border-2";
-    }
+export const differentVariant = (theme) => {
+  switch (theme) {
+    case "first":
+      return "bg-blue-600 text-white hover:bg-blue-700 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105";
+    case "second":
+      return "bg-green-600 text-white hover:bg-green-700 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105";
+    case "third":
+      return "bg-red-600 text-white hover:bg-red-700 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105";
+    case "circular": // New circular theme
+      return "bg-gray-300 text-white hover:bg-gray-400 rounded-full w-12 h-12 flex items-center justify-center shadow-md transition duration-300 ease-in-out transform hover:scale-110";
+    case "ghost": // Renamed 'fourth' for clarity
+      return "bg-transparent text-gray-700 hover:text-blue-600 hover:underline transition duration-300 ease-in-out";
+    default:
+      return "bg-gray-600 text-white hover:bg-gray-700 rounded-lg shadow-md transition duration-300 ease-in-out transform hover:scale-105";
+  }
 };

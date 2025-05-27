@@ -8,10 +8,14 @@ useHead({
     title:"Sign-in",
 });
 const user = useAuthStore();
-async function onLogin(value){
-    const check = await user.Login(value.username,value.password);
+async function onLogin({ values, setFieldError }){
+    const check = await user.Login(values.username,values.password);
+    console.log(check);
     if (check){
         await navigateTo('/');
+    }else{
+        setFieldError('username', 'Invalid username or password');
+        setFieldError('password', 'Invalid username or password');
     }
 }
 function onRegsiter(){
