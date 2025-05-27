@@ -1,11 +1,11 @@
 <script setup>
 const emit = defineEmits(['submitLogin','gotoRegister','gotoForgetpass']);
-const {handleSubmit, isSubmitting} = useForm({
+const {handleSubmit, isSubmitting , setFieldError} = useForm({
     validationSchema: useLoginValidationSchema(),
     validateOnInput:false,
 });
 const onSubmit = handleSubmit(values =>{
-    emit('submitLogin',values)
+    emit('submitLogin',{values,setFieldError})
 });
 
 let regisForm = ref(false);

@@ -17,9 +17,8 @@ export const useAuthStore = defineStore('auth',()=>{
         isLoggedIn.value = true;
         const {data:response, error, status} = await LoginApi(username,password);
         if (status.value === 'error'){
-            useCustomError(error.value,(error)=>{
-                userError.value = error.value;
-            })
+            userError.value = error.value;
+            return false;
         }
         user.value.LoggedIn = true;
         user.value.token = response.value.token;
