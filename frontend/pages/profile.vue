@@ -43,6 +43,13 @@ const signOut = () =>{
     userID.value = ''
     navigateTo('/login')
 }
+const EditAddress = async ()=>{
+  if (isEditAddress.value){
+
+  }else{
+    isEditAddress.value = !isEditAddress.value
+  }
+}
 </script>
 
 <template>
@@ -92,7 +99,7 @@ const signOut = () =>{
       </div>
 
       <div class="flex flex-col md:flex-row justify-center gap-4 mt-4">
-        <BaseButton size="small" theme="second" class="px-6" @click="isEditAddress = !isEditAddress">
+        <BaseButton size="small" theme="second" class="px-6" @click="EditAddress">
           {{ isEditAddress ? 'Save Address' : 'Edit Address' }}
         </BaseButton>
         <BaseButton size="small" theme="third" class="px-6">Forget Password</BaseButton>

@@ -176,3 +176,48 @@ func AddItemOnCart(id string, item models.Item) error {
 	}
 	return nil
 }
+
+func UpdateProfile(id string, newProfile map[string]interface{}) error {
+	collection := config.GetCollection("User")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return errors.New("invalid user ID format")
+	}
+	var user models.User
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&user)
+	if err != nil {
+		return errors.New("user not found")
+	}
+	updateFields := bson.M{}
+	if newProfile["password"] != "" {
+		hashedPassword, err := bcrypt.GenerateFromPassword([]byte(newProfile["password"].(string)), bcrypt.DefaultCost)
+		if err != nil {
+			return errors.New("failed to hash password")
+		}
+		updateFields["password"] = string(hashedPassword)
+	}
+	if newProfile["address"] != "" {
+		updateFields["address"] = newProfile["address"]
+	}
+	if newProfile["coin"] != 0 {
+		newCoin := newProfile["coin"].(float64)
+		intCoin := int(newCoin)
+		updateFields["coin"] = intCoin + user.Coin
+	}
+	if newProfile["history"] != nil {
+		newHistory := user.History
+		newItem := newProfile["history"].(map[string]interface{})
+		if len(newItem) > 0 {
+			newHistory = append([]models.Item{newProfile["history"].(models.Item)}, newHistory...)
+			updateFields["history"] = newHistory
+		}
+	}
+	_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$set": updateFields})
+	if err != nil {
+		return errors.New("failed to update profile")
+	}
+	return nil
+}

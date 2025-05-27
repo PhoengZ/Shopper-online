@@ -66,3 +66,17 @@ export function getProfile(id,token){
         }
     })
 }
+
+export function updateProfile(id,profile,token){
+    return useFetchAPIMounted('auth/updateProfile',{
+        method:'patch',
+        headers:{
+            Authorization:`Bearer ${token}`
+        },
+        body:{
+            id:id,
+            profile:profile
+        }
+    })
+
+}
