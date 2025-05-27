@@ -9,7 +9,7 @@ const prop = defineProps({
 const emit = defineEmits(['logout','update:selectedItem','update:selectedSortOption']);
 
 const handleClick = (item)=>{
-    if (item === 'Logout' && mode === 'account'){
+    if (item === 'Logout' && prop.mode === 'account'){
         emit('logout');
         return
     }
@@ -28,7 +28,7 @@ watch(selectedSortOption, val => {
     <ul class=" rounded-2xl [&>li] w-2xs block">
         <li v-for="p in prop.product" :key="p">
             <template v-if="prop.mode === 'account'">
-                <BaseTypeItem @clik="handleClick(p)">{{p}}</BaseTypeItem>
+                <BaseTypeItem @click="() => handleClick(p)">{{p}}</BaseTypeItem>
             </template>
             <template v-else>
                 <div class=" grid grid-cols-2">

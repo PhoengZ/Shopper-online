@@ -1,6 +1,7 @@
 <script setup>
 defineProps({
-    product:Array
+    product:Array,
+    mode:String,
 });
 const emit = defineEmits(['buy']);
 
@@ -18,9 +19,18 @@ const handleBuy = (item)=>{
 
 </script>
 <template>
-    <ul class="[&>li] grid grid-cols-3 gap-4 ">
-        <li v-for="item in product">
-            <BaseCardItem :model="item" @buy="handleBuy"/>
-        </li>
-    </ul>
+    <template v-if="mode === 'main'">
+        <ul class="grid grid-cols-3 gap-4 ">
+            <li v-for="item in product">
+                <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode"/>
+            </li>
+        </ul>
+    </template>
+    <template v-else>
+        <ul class=" overflow-x-auto overflow-y-hidden whitespace-nowrap space-x-4 flex ">
+            <li v-for="item in product">
+                <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode"/>
+            </li>
+        </ul>
+    </template>
 </template>

@@ -17,7 +17,8 @@ const changeClick = ()=>{
 
 <template>
     <button class=" text-center flex flex-col items-center">
-        ทั้งหมด
+        <slot>
+        </slot>
         <IconDropDown class=" rounded-2xl hover:bg-gray-300"  @click="changeClick" v-if="flag"/>
         <IconDropUp class="rounded-2xl hover:bg-gray-300"  @click="changeClick" v-else/>
     </button>

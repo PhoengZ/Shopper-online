@@ -14,11 +14,9 @@ const handlelogout = () => {
 const handleItem = ()=>{
     emit('checkItem');
 }
-const handleOutside = ()=>{
-    isShow.value = false;
-}
+
 let isShow = computed(()=>prop.isShow)
-const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
+const proc = ref(["Profile","Setting","Coin: 0","Logout",]);
 </script>
 
 <template>
@@ -31,8 +29,7 @@ const proc = ref([prop.username,"Setting","Coin: 0","Logout",]);
                 <IconUser/>
                 <h4 class=" text-white">{{username === '' ? 'Sign-in':username}}</h4>
             </BaseButton>
-            <BaseTypeList v-if="isShow" @logout="handlelogout" mode="account" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10"
-            v-click-outside="handleOutside">
+            <BaseTypeList v-if="isShow" mode="account" @logout="handlelogout" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10">
             </BaseTypeList>
         </div>
         

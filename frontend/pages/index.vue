@@ -137,7 +137,7 @@ const handleOutside = ()=>{
     <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
-         <BaseCardList class="p-6" :product="pd" @buy="Buying" />
+         <BaseCardList class="p-6" :product="pd" @buy="Buying" mode="main" />
     </section>
     <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @add="Buying" @remove="Cancle"/>
 </template>

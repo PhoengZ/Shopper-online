@@ -1,7 +1,7 @@
 <script setup>
-const emit = defineEmits(['clik']);
+const emit = defineEmits(['click']);
 const func  = ()=>{
-    emit('clik');
+    emit('click');
 }
 </script>
 <template>
