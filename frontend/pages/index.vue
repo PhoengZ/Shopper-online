@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
-import { addItem, getCartItem, removeItem, validateToken } from '~/repositories/auth';
+import { addItem, getCartItem, removeItem, updateProfile, validateToken } from '~/repositories/auth';
 import { getProduct, getProductBySearching } from '~/repositories/product';
 import { getCategories } from '../repositories/categories';
 definePageMeta({
@@ -86,7 +86,7 @@ const checkItem = async ()=>{
         }
     }
 }
-const Buying = async (item)=>{
+const Adding = async (item)=>{
     if (!isValidToken.value){
         navigateTo('/login');
         return 
@@ -135,6 +135,24 @@ const handleProfile = ()=>{
     }
     navigateTo('/profile');
 }
+const handleBuyItem = async(item) =>{
+    if (!isValidToken.value){
+        navigateTo('/login')
+        return
+    }
+    const object = {
+        "password":"",
+        "address":"",
+        "coin":0,
+        "history":item
+    }
+    const {message} = await updateProfile(userID.value,object,token.value)
+    if (message === "Success updating profile"){
+
+    }else{
+
+    }
+}
 const handleOutside = ()=>{
     showList.value = false;
 }
@@ -146,5 +164,5 @@ const handleOutside = ()=>{
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" mode="main" />
     </section>
-    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @add="Buying" @remove="Cancle"/>
+    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="" @add="Adding" @remove="Cancle"/>
 </template>

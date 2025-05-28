@@ -78,5 +78,4 @@ export function updateProfile(id,profile,token){
             profile:profile
         }
     })
-
 }

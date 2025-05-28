@@ -2,6 +2,7 @@ package services
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"time"
 
@@ -96,7 +97,7 @@ func GetCartListByID(id string) ([]models.Item, error) {
 	return user.CartList, nil
 }
 
-func RemoveItemOnCart(userID, itemID string) error {
+func RemoveItemOnCart(userID string, itemID []string) error {
 	collection := config.GetCollection("User")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
@@ -110,23 +111,20 @@ func RemoveItemOnCart(userID, itemID string) error {
 	if err != nil {
 		return err
 	}
-	l := len(user.CartList)
+	l := len(itemID)
 	found := false
+	listItem := make(map[string]bool)
 	for i := 0; i < l; i++ {
-		if user.CartList[i].ID == itemID {
+		listItem[itemID[i]] = true
+	}
+	l = len(user.CartList)
+	for i := l - 1; i >= 0; i-- {
+		if listItem[user.CartList[i].ID] {
 			found = true
 			user.CartList[i].Quantity--
 			if user.CartList[i].Quantity <= 0 {
-				arr := []models.Item{}
-				for j := 0; j < i; j++ {
-					arr = append(arr, user.CartList[j])
-				}
-				for j := i + 1; j < l; j++ {
-					arr = append(arr, user.CartList[j])
-				}
-				user.CartList = arr
+				user.CartList = append(user.CartList[0:i], user.CartList[i+1:]...)
 			}
-			break
 		}
 	}
 	if !found {
@@ -140,7 +138,6 @@ func RemoveItemOnCart(userID, itemID string) error {
 		return err
 	}
 	return nil
-
 }
 
 func AddItemOnCart(id string, item models.Item) error {
@@ -208,12 +205,24 @@ func UpdateProfile(id string, newProfile map[string]interface{}) error {
 		updateFields["coin"] = intCoin + user.Coin
 	}
 	if newProfile["history"] != nil {
-		newHistory := user.History
-		newItem := newProfile["history"].(map[string]interface{})
-		if len(newItem) > 0 {
-			newHistory = append([]models.Item{newProfile["history"].(models.Item)}, newHistory...)
-			updateFields["history"] = newHistory
+		var newHistory []models.Item
+		rawHistory := newProfile["history"].([]interface{})
+		for _, item := range rawHistory {
+			newItem := item.(map[string]interface{})
+			b, err := json.Marshal(newItem)
+			if err != nil {
+				return errors.New("failed to convert item to []byte")
+			}
+			var Item models.Item
+			err = json.Unmarshal(b, &Item)
+			if err != nil {
+				return errors.New("failed to convert item back to models.Item")
+			}
+			newHistory = append(newHistory, Item)
 		}
+
+		newHistory = append(newHistory, user.History...)
+		updateFields["history"] = newHistory
 	}
 	_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$set": updateFields})
 	if err != nil {
