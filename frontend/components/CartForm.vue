@@ -12,7 +12,7 @@ const removeItem = (id)=>{
     emit('remove',id)
 }
 const buyItem = ()=>{
-    emit('buy',selectedItem.value)
+    emit('buy',selectedItem.value,totalPrice.value)
 }
 const totalPrice = computed(() =>
   prop.item.reduce((sum, i) => sum + i.price * (i.quantity == null ? 1 : i.quantity),0)

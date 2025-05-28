@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
-import { addItem, getCartItem, removeItem, updateProfile, validateToken } from '~/repositories/auth';
+import { addItem, getCartItem, removeItem, updatePaying, updateProfile, validateToken } from '~/repositories/auth';
 import { getProduct, getProductBySearching } from '~/repositories/product';
 import { getCategories } from '../repositories/categories';
 definePageMeta({
@@ -135,7 +135,7 @@ const handleProfile = ()=>{
     }
     navigateTo('/profile');
 }
-const handleBuyItem = async(item) =>{
+const handleBuyItem = async(item,totalPrice) =>{
     if (!isValidToken.value){
         navigateTo('/login')
         return
@@ -146,12 +146,16 @@ const handleBuyItem = async(item) =>{
         "coin":0,
         "history":item
     }
-    const {message} = await updateProfile(userID.value,object,token.value)
-    if (message === "Success updating profile"){
-
-    }else{
-
+    try{
+        //await payment
+        const {mess} = await updatePaying(userID.value,totalPrice,token.value)
+        const {message} = await updateProfile(userID.value,object,token.value)
+        const {product} = await getCartItem(userID.value, token.value)
+        Item.value = product
+    }catch(err){
+        console.error(err);
     }
+    
 }
 const handleOutside = ()=>{
     showList.value = false;
@@ -164,5 +168,5 @@ const handleOutside = ()=>{
         <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Buying" mode="main" />
     </section>
-    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="" @add="Adding" @remove="Cancle"/>
+    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="handleBuyItem" @add="Adding" @remove="Cancle"/>
 </template>
