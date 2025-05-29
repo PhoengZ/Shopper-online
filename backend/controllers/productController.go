@@ -49,3 +49,14 @@ func GetProductByID(w http.ResponseWriter, r *http.Request) {
 	}
 	response.JSONResponse(w, http.StatusOK, product)
 }
+
+func GetProductSellingByID(w http.ResponseWriter, r *http.Request) {
+
+}
+func CreateItem(w http.ResponseWriter, r *http.Request) {
+
+}
+
+func EditItem(w http.ResponseWriter, r *http.Request) {
+
+}

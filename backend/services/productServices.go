@@ -72,3 +72,13 @@ func GetProductByID(productID string) (map[string]interface{}, error) {
 	}
 	return product, nil
 }
+func GetSellingByID() {
+
+}
+
+func CreateItem() {
+
+}
+func EditItem() {
+
+}
