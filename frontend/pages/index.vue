@@ -160,13 +160,19 @@ const handleBuyItem = async(item,totalPrice) =>{
 const handleOutside = ()=>{
     showList.value = false;
 }
+const handleProduct = ()=>{
+    if (!isValidToken){
+        navigateTo('/login')
+    }
+    navigateTo('/selling')
+}   
 </script>
 
 <template>
-    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
-         <BaseCardList class="p-6" :product="pd" @buy="Buying" mode="main" />
+         <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
     </section>
     <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="handleBuyItem" @add="Adding" @remove="Cancle"/>
 </template>

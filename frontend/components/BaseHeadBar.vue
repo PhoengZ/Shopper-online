@@ -4,7 +4,7 @@ const prop = defineProps({
     username:String,
     isShow:Boolean,
 })
-const emit = defineEmits(['isDropuser','logout','checkItem','profile']);
+const emit = defineEmits(['isDropuser','logout','checkItem','profile','getproduct']);
 const handleClick = ()=>{
     emit('isDropuser');
 }
@@ -17,9 +17,11 @@ const handleProfile = ()=>{
 const handleItem = ()=>{
     emit('checkItem');
 }
-
+const handleProduct = ()=>{
+    emit('getproduct')
+}
 let isShow = computed(()=>prop.isShow)
-const proc = ref(["Profile","Setting","Coin: 0","Logout",]);
+const proc = ref(["Profile","Product","Coin: 0","Logout",]);
 </script>
 
 <template>
@@ -32,7 +34,7 @@ const proc = ref(["Profile","Setting","Coin: 0","Logout",]);
                 <IconUser/>
                 <h4 class=" text-white">{{username === '' ? 'Sign-in':username}}</h4>
             </BaseButton>
-            <BaseTypeList v-if="isShow" mode="account" @profile="handleProfile" @logout="handlelogout" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10">
+            <BaseTypeList v-if="isShow" mode="account" @product="handleProduct" @profile="handleProfile" @logout="handlelogout" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10">
             </BaseTypeList>
         </div>
         
