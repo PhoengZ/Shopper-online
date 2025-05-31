@@ -26,7 +26,7 @@ const handleBuy = (item)=>{
             </li>
         </ul>
     </template>
-    <template v-else>
+    <template v-else-if="mode === 'profile'">
         <ul class=" overflow-x-auto overflow-y-hidden whitespace-nowrap space-x-4 flex ">
             <li v-for="item in product">
                 <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode"/>
