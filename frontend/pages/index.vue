@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
-import { addItem, getCartItem, removeItem, updatePaying, updateProfile, validateToken } from '~/repositories/auth';
+import { addItem, getCartItem, removeItem, updateProfile, validateToken } from '~/repositories/auth';
 import { getProduct, getProductBySearching } from '~/repositories/product';
 import { getCategories } from '../repositories/categories';
 definePageMeta({
@@ -147,8 +147,8 @@ const handleBuyItem = async(item,totalPrice) =>{
         "history":item
     }
     try{
-        //await payment
-        const {mess} = await updatePaying(userID.value,totalPrice,token.value)
+        //await add transaction to collection
+        //await updateProfile by update coin
         const {message} = await updateProfile(userID.value,object,token.value)
         const {product} = await getCartItem(userID.value, token.value)
         Item.value = product

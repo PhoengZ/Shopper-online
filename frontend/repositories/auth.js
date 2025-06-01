@@ -80,15 +80,65 @@ export function updateProfile(id,profile,token){
     })
 }
 
-export function updatePaying(id,value,token){
-    return useFetchAPIMounted('/auth/updatePaying',{
-        method:'patch',
+// export function updatePaying(id,value,token){
+//     return useFetchAPIMounted('/auth/updatePaying',{
+//         method:'patch',
+//         headers:{
+//             Authorization:`Bearer ${token}`
+//         },
+//         body:{
+//             id:id,
+//             coin:value,
+//         }
+//     })
+// }
+
+export function getStoreItem(id, token){
+    return useFetchAPI(`/auth/getStoreItem/${id}`,{
+        method:'get',
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    })
+}
+
+export function addStoreItem(id, product, token){
+    return useFetchAPIMounted('auth/addStoreItem',{
+        method:'post',
         headers:{
             Authorization:`Bearer ${token}`
         },
         body:{
             id:id,
-            coin:value,
+            product:product
         }
     })
+}
+
+export function removeStoreItem(userID, productID, token){
+    return useFetchAPIMounted('/auth/removeStoreItem',{
+        method:'delete',
+        headers:{
+            Authorization:`Bearer ${token}`
+        },
+        body:{
+            userID:userID,
+            productID:productID
+        }
+    })
+}
+
+export function editStoreItem(userID, productID, product, token){
+    return useFetchAPIMounted('/auth/editStoreItem',{
+        method:'patch',
+        headers:{
+            Authorization:`Bearer ${token}`
+        },
+        body:{
+            userID:userID,
+            productID:productID,
+            product:product
+        }
+    }
+)
 }

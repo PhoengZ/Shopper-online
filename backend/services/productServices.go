@@ -82,3 +82,6 @@ func CreateItem() {
 func EditItem() {
 
 }
+func DeleteItem() {
+
+}

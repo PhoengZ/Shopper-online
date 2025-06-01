@@ -60,3 +60,6 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 func EditItem(w http.ResponseWriter, r *http.Request) {
 
 }
+func DeleteItem(w http.ResponseWriter, r *http.Request) {
+
+}
