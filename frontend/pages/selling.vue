@@ -17,6 +17,14 @@ const {data, error:err, status} = await getStoreItem(user.userID, user.token)
 const products = data.value?.products
 var curProducts = ref([])
 var outProducts = ref([])
+const ItemAdd = ref({
+  name: '',
+  description: '',
+  price: '',
+  quantity: '',
+  category: ''
+})
+const addProduct = ref(false)
 for (let i in products){
   if (products[i].quantity > 0){
     curProducts.value.push(products[i])
@@ -24,37 +32,6 @@ for (let i in products){
     outProducts.value.push(products[i])
   }
 }
-// const products = ref([
-//   {
-//     name: "Wireless Mouse",
-//     category: ["electronics"],
-//     price: 799,
-//     description: "A sleek wireless mouse with ergonomic design and long battery life.",
-//     quantity: 25,
-//   },
-//   {
-//     name: "Mechanical Keyboard",
-//     category: ["keyboards"],
-//     price: 1999,
-//     description: "A durable mechanical keyboard with customizable RGB lighting.",
-//     quantity: 10,
-//   },
-//   {
-//     name: "Bluetooth Speaker",
-//     category: ["audio"],
-//     price: 1499,
-//     description: "Portable Bluetooth speaker with high-quality sound and waterproof design.",
-//     quantity: 15,
-//   },
-//   {
-//     name: "USB-C Hub",
-//     category: ["computer accessories"],
-//     price: 1099,
-//     description: "Multiport USB-C hub with HDMI, USB 3.0, and SD card reader support.",
-//     quantity: 30,
-//   },
-// ])
-
 const handleRemove = async(id) =>{
   console.log("testremove",id);
 }
@@ -62,20 +39,36 @@ const handleEdit = async(id)=>{
   console.log("testEdit",id);
   
 }
-const handleAdd = async()=>{
-  for (let i = 0;i<products.value.length;i++){
-    console.log(products.value[i].name);
+const handleAdd = ()=>{
+  addProduct.value = !addProduct.value
+}
+const summitAdd = async()=>{
+  for (let i in ItemAdd.value){
+    console.log("Itemadd:",ItemAdd.value[i]);
   }
 }
+
 </script>
 <template>
     <BaseButton class=" absolute" size="small" theme="circular" @click="prevClick">
         <IconBackArrow color="#000000" class="absolute"/>
     </BaseButton>
-    <BaseButton class=" absolute top-4 right-4" size="small" theme="circular" @click="handleAdd"><IconPlus color="#000000"/>
-    </BaseButton>
     <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5"><IconCheckList color="#000000" /> Currently selling</h1>
     <BaseStoreList :products="curProducts" @remove="handleRemove" @edit="handleEdit"/>
-    <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5 border-t-2 pt-4"><IconCheckList color="#000000" />Out of stock</h1>
+    <BaseStoreItem v-if="addProduct" :edit-mode="addProduct">
+      <div class=" border-2 p-5 rounded-2xl flex flex-row items-start gap-3 bg-white">
+        <BaseInput placeholder="Add your image" type="file" width="w-2/6" class="h-full"/>
+        <div class=" flex flex-col w-full">
+          <BaseInput  placeholder="Product name" width="w-full" v-model:modelvalue="ItemAdd.name"/>
+          <BaseInput  placeholder="Description" width="w-full" v-model:modelvalue="ItemAdd.description"/>
+          <BaseInput  placeholder="Price" type="number" width="w-full" v-model:modelvalue="ItemAdd.price"/>
+          <BaseInput  placeholder="Quantity" type="number" width="w-full" v-model:modelvalue="ItemAdd.quantity"/>
+          <BaseInput  placeholder="Category (comma separated)" width="w-full" v-model:modelvalue="ItemAdd.category"/>
+        </div>
+        <BaseButton size="small" theme="second" class="mt-auto mx-auto" @click="summitAdd">Summit</BaseButton>
+      </div>
+    </BaseStoreItem>
+    <BaseButton size="small" theme="first" class=" flex items-center justify-center" @click="handleAdd"><IconPlus color="#ffffff"/></BaseButton>
+    <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5 border-t-2 pt-4"><IconCheckList color="#000000"/>Out of stock</h1>
     <BaseStoreList :products="outProducts" @remove="handleRemove" @edit="handleEdit"/>
 </template>
