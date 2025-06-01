@@ -51,7 +51,14 @@ func GetProductByID(w http.ResponseWriter, r *http.Request) {
 }
 
 func GetProductSellingByID(w http.ResponseWriter, r *http.Request) {
-
+	vars := mux.Vars(r)
+	uid := vars["id"]
+	item, err := services.GetSellingByID(uid)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "Failed to get item"})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"products": item})
 }
 func CreateItem(w http.ResponseWriter, r *http.Request) {
 

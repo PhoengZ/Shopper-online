@@ -29,7 +29,7 @@ const handleEdit = ()=>{
 
       <div class="flex items-center justify-between mt-4">
         <p class="font-bold text-lg text-green-600">{{ item.price }}฿</p>
-        <p class="font-bold text-lg text-gray-700">{{item.quantity}} piece</p>
+        <p class="font-bold text-lg text-gray-700" :class="item.quantity > 0 ? 'text-gray-700':'text-red-600' ">{{item.quantity}} piece</p>
         <div class="flex gap-2">
           <BaseButton size="small" theme="third" @click="handleRemove">Remove</BaseButton>
         </div>

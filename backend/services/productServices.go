@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"backend/config"
+	"backend/models"
 
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -72,16 +73,33 @@ func GetProductByID(productID string) (map[string]interface{}, error) {
 	}
 	return product, nil
 }
-func GetSellingByID() {
+func GetSellingByID(uid string) ([]models.Product, error) {
+	collection := config.GetCollection("Product")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
 
+	cursor, err := collection.Find(ctx, bson.M{"uid": uid})
+	if err != nil {
+		return []models.Product{}, err
+	}
+	var items []models.Product
+	for cursor.Next(ctx) {
+		var item models.Product
+		err = cursor.Decode(&item)
+		if err != nil {
+			return []models.Product{}, err
+		}
+		items = append(items, item)
+	}
+	return items, nil
 }
 
-func CreateItem() {
-
+func CreateItem(uid string, item map[string]interface{}) error {
+	return nil
 }
-func EditItem() {
-
+func EditItem(uid, pid string, item map[string]interface{}) error {
+	return nil
 }
-func DeleteItem() {
-
+func DeleteItem(pid, uid string) error {
+	return nil
 }
