@@ -1,5 +1,5 @@
 <script setup>
-import { getStoreItem } from '~/repositories/product'
+import { addStoreItem, getStoreItem } from '~/repositories/product'
 import { useAuthStore } from '~/Stores/auth'
 
 definePageMeta({
@@ -35,19 +35,30 @@ for (let i in products){
   }
 }
 const handleRemove = async(id) =>{
-  console.log("testremove",id);
   //เรียก api remove สินค้าแล้วลบออกจาก curProducts หรือ outProducts
 }
 const handleEdit = async(id)=>{
-  console.log("testEdit",id);
   editingSet.value.add(id)
 }
 const handleAdd = ()=>{
   addProduct.value = !addProduct.value
 }
 const submitAdd = async(item)=>{
-  // เรียกapi add สินค้า
-  console.log(item);
+  const data = new FormData()
+  for (let i in item){
+    data.append(i, item[i])
+  }
+  data.append('uid',user.userID)
+  try{
+    const {product} = await addStoreItem(data, user.token)
+    if (product.quantity > 0) {
+      curProducts.value.push(product)
+    } else {
+      outProducts.value.push(product)
+    }
+  }catch(e){
+    console.error("Error adding product:", e)
+  } 
 } 
 const submitEdit = async(item)=>{
   // เรียกapi edit สินค้า

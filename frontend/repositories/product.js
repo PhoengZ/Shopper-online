@@ -22,19 +22,15 @@ export function getStoreItem(id, token){
     })
 }
 
-export function addStoreItem(id, product, token){
-    return useFetchAPIMounted('auth/addStoreItem',{
+export function addStoreItem(product, token){
+    return useFetchAPIMounted('/auth/addStoreItem',{
         method:'post',
         headers:{
             Authorization:`Bearer ${token}`
         },
-        body:{
-            id:id,
-            product:product
-        }
+        body:product
     })
 }
-
 export function removeStoreItem(userID, productID, token){
     return useFetchAPIMounted('/auth/removeStoreItem',{
         method:'delete',
@@ -48,17 +44,13 @@ export function removeStoreItem(userID, productID, token){
     })
 }
 
-export function editStoreItem(userID, productID, product, token){
+export function editStoreItem(product, token){
     return useFetchAPIMounted('/auth/editStoreItem',{
         method:'patch',
         headers:{
             Authorization:`Bearer ${token}`
         },
-        body:{
-            userID:userID,
-            productID:productID,
-            product:product
-        }
+        body:product
     }
 )
 }

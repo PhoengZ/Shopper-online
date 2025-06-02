@@ -94,12 +94,21 @@ func GetSellingByID(uid string) ([]models.Product, error) {
 	return items, nil
 }
 
-func CreateItem(uid string, item map[string]interface{}) error {
+func CreateItem(item models.Product) (models.Product, error) {
+	collection := config.GetCollection("Product")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+	ItemID := primitive.NewObjectID()
+	item.ID = ItemID.Hex()
+	_, err := collection.InsertOne(ctx, item)
+	if err != nil {
+		return models.Product{}, err
+	}
+	return item, nil
+}
+func EditItem(pid string, item models.Product) error {
 	return nil
 }
-func EditItem(uid, pid string, item map[string]interface{}) error {
-	return nil
-}
-func DeleteItem(pid, uid string) error {
+func DeleteItem(pid string) error {
 	return nil
 }
