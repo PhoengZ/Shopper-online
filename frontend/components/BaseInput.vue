@@ -2,7 +2,9 @@
 const props = defineProps({
     name:String,
     placeholder:String,
-    modelvalue:[String,Number,Array],
+    modelvalue:{
+        type:[String,Number,Array,File]
+    },
     type:{
         type:String,
         default:'text'
@@ -37,11 +39,16 @@ const style = computed(()=>{
     }
     return "w-full border-2 rounded-md px-3 py-2 focus:outline-none focus:border-blue-500 bg-white";
 });
-
+const handleChange = (e) =>{
+    const file = e.target.files[0]
+    value.value = file
+    emit('update:modelvalue', file)
+}
 </script>
 <template>
     <div class="mb-3" :class="props.width,props.height">
-        <input :class="style" v-model="value" :placeholder="placeholder" :type="type" :accept="type === 'file' ? 'image/*' : ''"  class="h-full">
+        <input v-if="type === 'file'" type="file" :class="style" :placeholder="placeholder" @change="handleChange" class="h-full" :accept="'image/*'">
+        <input v-else :class="style"  v-model="value" :placeholder="placeholder" :type="type" class="h-full"/>
         <BaseErrorMessage v-if="errorMessage">{{errorMessage}}</BaseErrorMessage>
     </div>
 </template>

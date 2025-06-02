@@ -9,6 +9,7 @@ const props = defineProps({
 })
 const emit = defineEmits(['remove', 'edit','submit'])
 const product = ref(props.item)
+product.value.file = null;
 const handleRemove = ()=>{
     emit('remove')
 }
@@ -60,7 +61,7 @@ const categoryAdd = (value)=>{
   </template>
   <template v-else>
     <div class=" border-2 p-5 rounded-2xl flex flex-row items-start gap-3 bg-white">
-      <BaseInput placeholder="Add your image" type="file" width="w-2/6" class="h-full"/>
+      <BaseInput placeholder="Add your image" type="file" width="w-2/6" class="h-full" v-model:modelvalue="product.file"/>
       <div class=" flex flex-col w-full">
         <BaseInput  placeholder="Product name" width="w-full" v-model:modelvalue="product.name"/>
         <BaseInput  placeholder="Description" width="w-full" v-model:modelvalue="product.description"/>

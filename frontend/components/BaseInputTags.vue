@@ -39,12 +39,12 @@ const style = computed(()=>{
 .v3ti{
     border-width: 2px;
     border-radius: 0.375rem;
-    border-color: #e5e7eb;
+    border-color: black;
     padding: 0.2rem;
 }
 .v3ti--focus{
     outline-width: 0px;
-    border-color: black;
+    border-color: blue;
     box-shadow: none;
 }
 .v3ti .v3ti-tag{
