@@ -2,7 +2,7 @@
 const props = defineProps({
     name:String,
     placeholder:String,
-    modelvalue:String,
+    modelvalue:[String,Number,Array],
     type:{
         type:String,
         default:'text'
@@ -11,6 +11,10 @@ const props = defineProps({
         type:String,
         deafult:'w-3/4'
     },
+    height:{
+        type:String,
+        default:'h-full'
+    }
 })
 const emit = defineEmits(['update:modelvalue']);
 let value = ref(props.modelvalue); // fallback ถ้าไม่ใช้ vee-validate
@@ -36,7 +40,7 @@ const style = computed(()=>{
 
 </script>
 <template>
-    <div class="mb-3  h-full" :class="props.width">
+    <div class="mb-3" :class="props.width,props.height">
         <input :class="style" v-model="value" :placeholder="placeholder" :type="type" :accept="type === 'file' ? 'image/*' : ''"  class="h-full">
         <BaseErrorMessage v-if="errorMessage">{{errorMessage}}</BaseErrorMessage>
     </div>

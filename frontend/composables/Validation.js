@@ -9,3 +9,7 @@ export const useRegisterValidationSchema = ()=>yup.object({
     password_1:yup.string().min(6).required().label('Password'),
     password_2:yup.string().oneOf([yup.ref('password_1')],"Password must match").required().label('Confirm Passowrd')
 });
+
+export const useCategoryValidationShema = ()=>yup.object({
+    categories: yup.array().min(1).of(yup.string().required().min(1)).label('categories'),
+})

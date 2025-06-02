@@ -19,9 +19,9 @@ const onLogin = ()=>{
     <form @submit.prevent="onSubmit" class="h-screen flex justify-center items-center bg-gray-200">
         <div class=" h-8/12 w-6/12 bg-white rounded-4xl flex justify-center items-center flex-col">
             <h1 class=" text-black font-bold text-6xl mb-10">Sign-up</h1>
-            <BaseInput name="username" placeholder="Username..."/>
-            <BaseInput name="password_1" placeholder="Password..." type="password"/>
-            <BaseInput name="password_2" placeholder="Verified password..." type="password"/>
+            <BaseInput name="username" placeholder="Username..." height="h-10" width="w-3/4"/>
+            <BaseInput name="password_1" placeholder="Password..." type="password" height="h-10" width="w-3/4"/>
+            <BaseInput name="password_2" placeholder="Verified password..." type="password" height="h-10" width="w-3/4"/>
             <div class=" flex justify-between w-10/12 mt-5">
                 <BaseButton size="small" theme="fourth" @click="onLogin" type="button">Sign-in</BaseButton>
                 <BaseButton v-if="!isSubmit" size="large" theme="first" type="submit">Sign-up</BaseButton>

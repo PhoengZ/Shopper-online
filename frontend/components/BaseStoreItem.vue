@@ -1,18 +1,27 @@
 <script setup>
-defineProps({
+
+const props = defineProps({
   item: Object,
   editMode:{
     type:Boolean,
     default:false
   }
 })
-const emit = defineEmits(['remove', 'edit'])
+const emit = defineEmits(['remove', 'edit','submit'])
+const product = ref(props.item)
 const handleRemove = ()=>{
     emit('remove')
 }
 const handleEdit = ()=>{
     emit('edit')
 }
+const submitAdd = ()=>{
+  emit('submit', product.value)
+}
+const categoryAdd = (value)=>{
+  product.value.category = value
+}
+
 </script>
 
 <template>
@@ -50,8 +59,16 @@ const handleEdit = ()=>{
     </div>
   </template>
   <template v-else>
-    <slot>
-      
-    </slot>
+    <div class=" border-2 p-5 rounded-2xl flex flex-row items-start gap-3 bg-white">
+      <BaseInput placeholder="Add your image" type="file" width="w-2/6" class="h-full"/>
+      <div class=" flex flex-col w-full">
+        <BaseInput  placeholder="Product name" width="w-full" v-model:modelvalue="product.name"/>
+        <BaseInput  placeholder="Description" width="w-full" v-model:modelvalue="product.description"/>
+        <BaseInput  placeholder="Price" type="number" width="w-full" v-model:modelvalue="product.price"/>
+        <BaseInput  placeholder="Quantity" type="number" width="w-full" v-model:modelvalue="product.quantity"/>
+        <CategoryForm :categories="product.category" @submit="categoryAdd"/>
+      </div>
+      <BaseButton size="small" theme="second" class="mt-auto mx-auto" @click="submitAdd">Submit</BaseButton>
+    </div>
   </template>
 </template>
