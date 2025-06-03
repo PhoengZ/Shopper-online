@@ -29,3 +29,14 @@ func UploadImage(fieldName string, r *http.Request) (string, error) {
 	}
 	return "/data/image/" + handler.Filename, nil
 }
+
+func HavingFieldImage(r *http.Request) (bool, error) {
+	_, _, err := r.FormFile("file")
+	if err != nil {
+		if err == http.ErrMissingFile {
+			return false, err
+		}
+		return true, err
+	}
+	return true, nil
+}

@@ -31,14 +31,13 @@ export function addStoreItem(product, token){
         body:product
     })
 }
-export function removeStoreItem(userID, productID, token){
+export function removeStoreItem(productID, token){
     return useFetchAPIMounted('/auth/removeStoreItem',{
         method:'delete',
         headers:{
             Authorization:`Bearer ${token}`
         },
         body:{
-            userID:userID,
             productID:productID
         }
     })
@@ -51,6 +50,5 @@ export function editStoreItem(product, token){
             Authorization:`Bearer ${token}`
         },
         body:product
-    }
-)
+    })
 }

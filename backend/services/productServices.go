@@ -98,17 +98,60 @@ func CreateItem(item models.Product) (models.Product, error) {
 	collection := config.GetCollection("Product")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
-	// ItemID := primitive.NewObjectID()
-	// item.ID = ItemID.Hex()
 	_, err := collection.InsertOne(ctx, item)
 	if err != nil {
 		return models.Product{}, err
 	}
 	return item, nil
 }
-func EditItem(pid string, item models.Product) error {
-	return nil
+func EditItem(item models.Product) (models.Product, error) {
+	collection := config.GetCollection("Product")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+
+	objID, err := primitive.ObjectIDFromHex(item.ID)
+	if err != nil {
+		return models.Product{}, errors.New("invalid item ID format")
+	}
+
+	updateField := bson.M{}
+	if item.Name != "" {
+		updateField["name"] = item.Name
+	}
+	if item.Description != "" {
+		updateField["description"] = item.Description
+	}
+	if item.Price >= 0 {
+		updateField["price"] = item.Price
+	}
+	if item.Quantity >= 0 {
+		updateField["quantity"] = item.Quantity
+	}
+	if item.Category != nil {
+		updateField["category"] = item.Category
+	}
+	if item.URL != "" {
+		updateField["url"] = item.URL
+	}
+	var product models.Product
+	err = collection.FindOneAndUpdate(ctx, bson.M{"_id": objID}, bson.M{"$set": updateField}, options.FindOneAndUpdate().SetReturnDocument(options.After)).Decode(&product)
+	if err != nil {
+		return models.Product{}, err
+	}
+	return product, nil
 }
 func DeleteItem(pid string) error {
+	collection := config.GetCollection("Product")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+
+	objID, err := primitive.ObjectIDFromHex(pid)
+	if err != nil {
+		return errors.New("item ID not valid")
+	}
+	_, err = collection.DeleteOne(ctx, bson.M{"_id": objID})
+	if err != nil {
+		return err
+	}
 	return nil
 }

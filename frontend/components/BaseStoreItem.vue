@@ -1,7 +1,4 @@
 <script setup>
-import { errorMessages } from 'vue/compiler-sfc';
-
-
 const props = defineProps({
   item: Object,
   editMode:{
@@ -31,7 +28,7 @@ const handleEdit = ()=>{
     emit('edit')
 }
 const submitAdd = handleSubmit(values=>{
-  console.log("Submitting product:", product.value);
+  // console.log("Submitting product:", product.value);
   emit('submit', product.value)
 })
 const categoryAdd = (value)=>{
@@ -65,7 +62,6 @@ const categoryAdd = (value)=>{
           </div>
         </div>
       </div>
-
       <BaseButton
         size="small"
         theme="circular"
