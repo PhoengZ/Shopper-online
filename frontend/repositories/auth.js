@@ -68,7 +68,7 @@ export function getProfile(id,token){
 }
 
 export function updateProfile(id,profile,token){
-    return useFetchAPIMounted('auth/updateProfile',{
+    return useFetchAPIMounted('/auth/updateProfile',{
         method:'patch',
         headers:{
             Authorization:`Bearer ${token}`
@@ -78,5 +78,18 @@ export function updateProfile(id,profile,token){
             profile:profile
         }
     })
-
 }
+
+// export function updatePaying(id,value,token){
+//     return useFetchAPIMounted('/auth/updatePaying',{
+//         method:'patch',
+//         headers:{
+//             Authorization:`Bearer ${token}`
+//         },
+//         body:{
+//             id:id,
+//             coin:value,
+//         }
+//     })
+// }
+

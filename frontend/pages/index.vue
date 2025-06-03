@@ -1,6 +1,6 @@
 <script setup>
 import { useAuthStore } from '~/Stores/auth';
-import { addItem, getCartItem, removeItem, validateToken } from '~/repositories/auth';
+import { addItem, getCartItem, removeItem, updateProfile, validateToken } from '~/repositories/auth';
 import { getProduct, getProductBySearching } from '~/repositories/product';
 import { getCategories } from '../repositories/categories';
 definePageMeta({
@@ -86,7 +86,7 @@ const checkItem = async ()=>{
         }
     }
 }
-const Buying = async (item)=>{
+const Adding = async (item)=>{
     if (!isValidToken.value){
         navigateTo('/login');
         return 
@@ -135,16 +135,44 @@ const handleProfile = ()=>{
     }
     navigateTo('/profile');
 }
+const handleBuyItem = async(item,totalPrice) =>{
+    if (!isValidToken.value){
+        navigateTo('/login')
+        return
+    }
+    const object = {
+        "password":"",
+        "address":"",
+        "coin":0,
+        "history":item
+    }
+    try{
+        //await add transaction to collection
+        //await updateProfile by update coin
+        const {message} = await updateProfile(userID.value,object,token.value)
+        const {product} = await getCartItem(userID.value, token.value)
+        Item.value = product
+    }catch(err){
+        console.error(err);
+    }
+    
+}
 const handleOutside = ()=>{
     showList.value = false;
 }
+const handleProduct = ()=>{
+    if (!isValidToken){
+        navigateTo('/login')
+    }
+    navigateTo('/selling')
+}   
 </script>
 
 <template>
-    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
         <!-- Part of showing product  -->
-         <BaseCardList class="p-6" :product="pd" @buy="Buying" mode="main" />
+         <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
     </section>
-    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @add="Buying" @remove="Cancle"/>
+    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="handleBuyItem" @add="Adding" @remove="Cancle"/>
 </template>

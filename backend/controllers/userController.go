@@ -84,8 +84,8 @@ func AddItemToCart(w http.ResponseWriter, r *http.Request) {
 
 func RemoveItemOnCart(w http.ResponseWriter, r *http.Request) {
 	var object struct {
-		UserId string `json:"userId"`
-		ItemId string `json:"itemId"`
+		UserId string   `json:"userId"`
+		ItemId []string `json:"itemId"`
 	}
 	err := json.NewDecoder(r.Body).Decode(&object)
 	if err != nil {

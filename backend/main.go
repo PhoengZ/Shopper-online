@@ -24,6 +24,7 @@ func main() {
 	routes.RegisterProductRoutes(r)
 	routes.RegisterValidateRoutes(r)
 	routes.RegisterCategoriesRoutes(r)
+	routes.RegisterationTopUp(r)
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"http://localhost:3000"},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH"},

@@ -10,7 +10,7 @@ defineProps({
 });
 </script>
 <template>
-    <img v-if="IsvalidUrl(url)" :src="url" v-bind="$attrs">
+    <img v-if="IsvalidUrl(url)" :src="url" v-bind="$attrs" class=" rounded-2xl">
     <slot v-else name="placeholder">
         <IconPlaceholder/>
     </slot>
