@@ -10,6 +10,9 @@ import (
 func UploadImage(fieldName string, r *http.Request) (string, error) {
 	file, handler, err := r.FormFile(fieldName)
 	if err != nil {
+		if err == http.ErrMissingFile {
+			return "/data/image/2011-12-05-457003.png", nil
+		}
 		return "", err
 	}
 	defer file.Close()

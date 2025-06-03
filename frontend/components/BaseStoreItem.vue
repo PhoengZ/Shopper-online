@@ -1,4 +1,6 @@
 <script setup>
+import { errorMessages } from 'vue/compiler-sfc';
+
 
 const props = defineProps({
   item: Object,
@@ -10,15 +12,28 @@ const props = defineProps({
 const emit = defineEmits(['remove', 'edit','submit'])
 const product = ref(props.item)
 product.value.file = null;
+const {handleSubmit, isSubmitting} = useForm({
+  validationSchema: useProductValidationSchema(),
+  validateOnInput: true,
+  keepValuesOnUnmount: true,
+  initialValues: {
+    name: product.value.name || '',
+    description: product.value.description || '',
+    price: product.value.price || '',
+    quantity: product.value.quantity || '',
+    category: product.value.category || []
+  }
+})
 const handleRemove = ()=>{
     emit('remove')
 }
 const handleEdit = ()=>{
     emit('edit')
 }
-const submitAdd = ()=>{
+const submitAdd = handleSubmit(values=>{
+  console.log("Submitting product:", product.value);
   emit('submit', product.value)
-}
+})
 const categoryAdd = (value)=>{
   product.value.category = value
 }
@@ -60,16 +75,16 @@ const categoryAdd = (value)=>{
     </div>
   </template>
   <template v-else>
-    <div class=" border-2 p-5 rounded-2xl flex flex-row items-start gap-3 bg-white">
+    <form @submit.prevent="submitAdd" class=" border-2 p-5 rounded-2xl flex flex-row items-start gap-3 bg-white">
       <BaseInput placeholder="Add your image" type="file" width="w-2/6" class="h-full" v-model:modelvalue="product.file"/>
       <div class=" flex flex-col w-full">
-        <BaseInput  placeholder="Product name" width="w-full" v-model:modelvalue="product.name"/>
-        <BaseInput  placeholder="Description" width="w-full" v-model:modelvalue="product.description"/>
-        <BaseInput  placeholder="Price" type="number" width="w-full" v-model:modelvalue="product.price"/>
-        <BaseInput  placeholder="Quantity" type="number" width="w-full" v-model:modelvalue="product.quantity"/>
-        <CategoryForm :categories="product.category" @submit="categoryAdd"/>
+        <BaseInput name="name" :-update="true" placeholder="Product name" width="w-full" v-model:modelvalue="product.name"/>
+        <BaseInput name="description" :-update="true" placeholder="Description" width="w-full" v-model:modelvalue="product.description"/>
+        <BaseInput name="price" :-update="true"  placeholder="Price" type="number" width="w-full" v-model:modelvalue="product.price"/>
+        <BaseInput name="quantity" :-update="true"  placeholder="Quantity" type="number" width="w-full" v-model:modelvalue="product.quantity"/>
+        <CategoryForm :categories="product.category" @confirm="categoryAdd"/>
       </div>
-      <BaseButton size="small" theme="second" class="mt-auto mx-auto" @click="submitAdd">Submit</BaseButton>
-    </div>
+      <BaseButton size="small" theme="second" class="mt-auto mx-auto" type="submit">{{isSubmitting ? "Submitting":"Submit"}}</BaseButton>
+    </form>
   </template>
 </template>

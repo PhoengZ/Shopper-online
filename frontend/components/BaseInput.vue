@@ -16,6 +16,10 @@ const props = defineProps({
     height:{
         type:String,
         default:'h-full'
+    },
+    Update:{
+        type:Boolean,
+        default:false
     }
 })
 const emit = defineEmits(['update:modelvalue']);
@@ -24,7 +28,7 @@ let errorMessage = ref("");
 if (props.name){
     const field = useField(() => props.name, undefined, {
         syncVModel: true,
-        validateOnValueUpdate: false,
+        validateOnValueUpdate: props.Update,
     });
     value = field.value;
     errorMessage = field.errorMessage;

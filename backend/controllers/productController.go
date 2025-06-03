@@ -83,13 +83,17 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid quantity format"})
 		return
 	}
+	ctg := strings.Split(r.FormValue("category"), ",")
+	if len(ctg) == 0 || (len(ctg) == 1 && ctg[0] == "") {
+		ctg = []string{}
+	}
 	item := models.Product{
 		UserID:      r.FormValue("uid"),
 		Name:        r.FormValue("name"),
 		Description: r.FormValue("description"),
 		Price:       price,
 		Quantity:    quantity,
-		Category:    strings.Split(r.FormValue("category"), ","),
+		Category:    ctg,
 		URL:         imageURL,
 	}
 	product, err := services.CreateItem(item)

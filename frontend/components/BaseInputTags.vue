@@ -6,9 +6,8 @@ const props = defineProps({
     modelValue:Array,
     placeholder:String,
 })
-
 const {value, errorMessage} = useField(()=> props.name, undefined,{
-    syncVModel:true
+    syncVModel:true,
 })
 const onTagChange = (newTags) =>{
     value.value = newTags

@@ -59,6 +59,7 @@ const submitAdd = async(item)=>{
   }catch(e){
     console.error("Error adding product:", e)
   } 
+  addProduct.value = false
 } 
 const submitEdit = async(item)=>{
   // เรียกapi edit สินค้า

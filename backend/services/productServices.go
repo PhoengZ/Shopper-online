@@ -98,8 +98,8 @@ func CreateItem(item models.Product) (models.Product, error) {
 	collection := config.GetCollection("Product")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
-	ItemID := primitive.NewObjectID()
-	item.ID = ItemID.Hex()
+	// ItemID := primitive.NewObjectID()
+	// item.ID = ItemID.Hex()
 	_, err := collection.InsertOne(ctx, item)
 	if err != nil {
 		return models.Product{}, err

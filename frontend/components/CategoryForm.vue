@@ -5,9 +5,9 @@ import BaseInputTags from './BaseInputTags.vue';
 const props = defineProps({
     categories:Array,
 })
-const emit = defineEmits(['submit','cancel'])
+const emit = defineEmits(['confirm','cancel'])
 const {handleSubmit, isSubmitting} = useForm({
-    validationSchema:useCategoryValidationShema,
+    validationSchema:useCategoryValidationShema(),
     validateOnInput:true,
     keepValuesOnUnmount:true,
     initialValues:{
@@ -15,7 +15,8 @@ const {handleSubmit, isSubmitting} = useForm({
     }
 })
 const onSubmit = handleSubmit(values  =>{
-    emit('submit', values.categories)
+    console.log("Submitting categories:", values.categories);
+    emit('confirm', values.categories)
 })
 </script>
 <template>

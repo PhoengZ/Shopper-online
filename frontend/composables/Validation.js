@@ -11,5 +11,11 @@ export const useRegisterValidationSchema = ()=>yup.object({
 });
 
 export const useCategoryValidationShema = ()=>yup.object({
-    categories: yup.array().min(1).of(yup.string().required().min(1)).label('categories'),
+    categories: yup.array().min(1).required().of(yup.string().required().min(1)).label('categories'), 
+})
+export const useProductValidationSchema = ()=>yup.object({
+    name: yup.string().min(3).required().label("Name"),
+    description: yup.string().min(3).required().label("Description"),
+    price: yup.number().min(1).required().label("Price"),
+    quantity: yup.number().min(1).required().label("Quantity"),
 })
