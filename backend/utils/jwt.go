@@ -36,5 +36,5 @@ func ValidateToken(tokenString string) (string, error) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return claims["userID"].(string), nil
 	}
-	return "", errors.New("Invalid token")
+	return "", errors.New("invalid token")
 }

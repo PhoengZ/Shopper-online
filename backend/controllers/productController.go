@@ -5,6 +5,7 @@ import (
 	"backend/services"
 	"backend/utils"
 	"backend/utils/response"
+	"encoding/json"
 	"net/http"
 	"strconv"
 	"strings"
@@ -105,8 +106,70 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 }
 
 func EditItem(w http.ResponseWriter, r *http.Request) {
-
+	err := r.ParseMultipartForm(10 << 20)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Failed to parse form data because to large"})
+		return
+	}
+	check, err := utils.HavingFieldImage(r)
+	if err != nil {
+		if check {
+			response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Failed to parse form data because something"})
+			return
+		}
+	}
+	price, err := strconv.Atoi(r.FormValue("price"))
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid price format"})
+		return
+	}
+	quantity, err := strconv.Atoi(r.FormValue("quantity"))
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid quantity format"})
+		return
+	}
+	ctg := strings.Split(r.FormValue("category"), ",")
+	if len(ctg) == 0 || (len(ctg) == 1 && ctg[0] == "") {
+		ctg = []string{}
+	}
+	item := models.Product{
+		ID:          r.FormValue("id"),
+		UserID:      r.FormValue("uid"),
+		Name:        r.FormValue("name"),
+		Description: r.FormValue("description"),
+		Price:       price,
+		Quantity:    quantity,
+		Category:    ctg,
+	}
+	if check {
+		item.URL, err = utils.UploadImage("file", r)
+		if err != nil {
+			response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "failed to upload image"})
+			return
+		}
+	} else {
+		item.URL = ""
+	}
+	product, err := services.EditItem(item)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"product": product})
 }
 func DeleteItem(w http.ResponseWriter, r *http.Request) {
-
+	var payload struct {
+		PID string `json:"productID"`
+	}
+	err := json.NewDecoder(r.Body).Decode(&payload)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid request payload"})
+		return
+	}
+	err = services.DeleteItem(payload.PID)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "Failed to delete product"})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Product deleted successfully"})
 }

@@ -1,5 +1,5 @@
 <script setup>
-import { addStoreItem, getStoreItem } from '~/repositories/product'
+import { addStoreItem, editStoreItem, getStoreItem, removeStoreItem } from '~/repositories/product'
 import { useAuthStore } from '~/Stores/auth'
 
 definePageMeta({
@@ -35,9 +35,15 @@ for (let i in products){
   }
 }
 const handleRemove = async(id) =>{
-  //เรียก api remove สินค้าแล้วลบออกจาก curProducts หรือ outProducts
+  const {message} = await removeStoreItem(id, user.token)
+  if (message === "Product deleted successfully"){
+    curProducts.value = curProducts.value.filter(p => p.id !== id)
+    outProducts.value = outProducts.value.filter(p => p.id !== id)
+  } else {
+    console.error("Error removing product:", message)
+  }
 }
-const handleEdit = async(id)=>{
+const handleEdit = (id)=>{
   editingSet.value.add(id)
 }
 const handleAdd = ()=>{
@@ -62,8 +68,42 @@ const submitAdd = async(item)=>{
   addProduct.value = false
 } 
 const submitEdit = async(item)=>{
-  // เรียกapi edit สินค้า
-  editingSet.value.delete(item.id)
+  const data = new FormData()
+  for (let i in item){
+    data.append(i, item[i])
+  }
+  try{
+    const {product} = await editStoreItem(data,user.token)
+    editingSet.value.delete(item.id)
+    var found = false;
+    if (product.quantity > 0) {
+      for (let i in curProducts.value){
+        if (curProducts.value[i].id === product.id) {
+          curProducts.value[i] = product
+          found = true
+          break
+        }
+      }
+      if (!found) {
+        curProducts.value.push(product)
+        outProducts.value = outProducts.value.filter(p => p.id !== product.id)
+      }
+    } else {
+      for (let i in outProducts.value){
+        if (outProducts.value[i].id === product.id) {
+          outProducts.value[i] = product
+          found = true
+          break
+        }
+      }
+      if (!found){
+        outProducts.value.push(product)
+        curProducts.value = curProducts.value.filter(p => p.id !== product.id)
+      }
+    }
+  }catch(error){
+    console.error("Error editing product:", error?.data?.message);
+  }
 }
 </script>
 <template>
