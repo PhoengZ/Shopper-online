@@ -3,7 +3,7 @@ import BaseSearch from './BaseSearch.vue';
 import BaseBadgeList from './BaseBadgeList.vue';
 import BaseOption from './BaseOption.vue';
 
-const emit = defineEmits(['auth','logout','checkItem','searchItem','profile','getproduct']);
+const emit = defineEmits(['auth','logout','checkItem','searchItem','profile','getproduct','topup']);
 
 const prop = defineProps({
     openFilter:Boolean,
@@ -43,7 +43,7 @@ const handleOutside = ()=>{
 </script>
 <template>
     <BaseHeadBar :username="username" :is-show="isDrop" @getproduct="$emit('getproduct')" @profile="$emit('profile')" @logout="$emit('logout')" @is-dropuser="$emit('auth')" @checkItem="$emit('checkItem')"
-    @auth="$emit('auth')" :class="openBlure ? 'blur-xs':''"/>
+    @auth="$emit('auth')" @topup="$emit('topup')" :class="openBlure ? 'blur-xs':''"/>
     <section class=" flex justify-center flex-row gap-5 items-start" :class="openBlure ? 'blur-xs':''">
         <div class=" flex flex-col w-2xl min-h-[50px]">
             <BaseSearch @search="handleGet" v-model="val"/>

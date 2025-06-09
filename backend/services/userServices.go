@@ -203,9 +203,13 @@ func UpdateProfile(id string, newProfile map[string]interface{}) error {
 		newCoin := newProfile["coin"].(float64)
 		intCoin := int(newCoin)
 		updateFields["coin"] = intCoin + user.Coin
+		if intCoin+user.Coin < 0 {
+			return errors.New("not enough coin")
+		}
 	}
 	if newProfile["history"] != nil {
 		var newHistory []models.Item
+		searchingCart := make(map[string]bool)
 		rawHistory := newProfile["history"].([]interface{})
 		for _, item := range rawHistory {
 			newItem := item.(map[string]interface{})
@@ -218,11 +222,18 @@ func UpdateProfile(id string, newProfile map[string]interface{}) error {
 			if err != nil {
 				return errors.New("failed to convert item back to models.Item")
 			}
+			searchingCart[Item.ID] = true
 			newHistory = append(newHistory, Item)
 		}
-
+		var newCartList []models.Item
+		for _, item := range user.CartList {
+			if !searchingCart[item.ID] {
+				newCartList = append(newCartList, item)
+			}
+		}
 		newHistory = append(newHistory, user.History...)
 		updateFields["history"] = newHistory
+		updateFields["cartlist"] = newCartList
 	}
 	_, err = collection.UpdateOne(ctx, bson.M{"_id": objID}, bson.M{"$set": updateFields})
 	if err != nil {

@@ -19,3 +19,6 @@ export const useProductValidationSchema = ()=>yup.object({
     price: yup.number().min(1).required().label("Price"),
     quantity: yup.number().min(1).required().label("Quantity"),
 })
+export const usePaymentValidationSchema = ()=>yup.object({
+    amount: yup.number().min(1).required().label("Amount")
+})

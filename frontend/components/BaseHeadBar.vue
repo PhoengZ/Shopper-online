@@ -4,7 +4,7 @@ const prop = defineProps({
     username:String,
     isShow:Boolean,
 })
-const emit = defineEmits(['isDropuser','logout','checkItem','profile','getproduct']);
+const emit = defineEmits(['isDropuser','logout','checkItem','profile','getproduct','topup']);
 const handleClick = ()=>{
     emit('isDropuser');
 }
@@ -20,8 +20,11 @@ const handleItem = ()=>{
 const handleProduct = ()=>{
     emit('getproduct')
 }
+const handleTopup = ()=>{
+    emit('topup');
+}
 let isShow = computed(()=>prop.isShow)
-const proc = ref(["Profile","Product","Coin: 0","Logout",]);
+const proc = ref(["Profile","Product","Top up","Coin: 0","Logout",]);
 </script>
 
 <template>
@@ -34,7 +37,8 @@ const proc = ref(["Profile","Product","Coin: 0","Logout",]);
                 <IconUser/>
                 <h4 class=" text-white">{{username === '' ? 'Sign-in':username}}</h4>
             </BaseButton>
-            <BaseTypeList v-if="isShow" mode="account" @product="handleProduct" @profile="handleProfile" @logout="handlelogout" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10">
+            <BaseTypeList v-if="isShow" mode="account" @product="handleProduct" @profile="handleProfile" @logout="handlelogout" :product="proc" class="absolute left-0 top-full mt-2 max-h-30 w-full overflow-y-auto drop-shadow-lg z-10"
+            @topup="handleTopup">
             </BaseTypeList>
         </div>
         

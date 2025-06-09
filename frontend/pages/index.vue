@@ -143,19 +143,16 @@ const handleBuyItem = async(item,totalPrice) =>{
     const object = {
         "password":"",
         "address":"",
-        "coin":0,
+        "coin":-totalPrice,
         "history":item
     }
     try{
-        //await add transaction to collection
-        //await updateProfile by update coin
         const {message} = await updateProfile(userID.value,object,token.value)
-        const {product} = await getCartItem(userID.value, token.value)
-        Item.value = product
+        const {products} = await getCartItem(userID.value, token.value)
+        Item.value = products
     }catch(err){
         console.error(err);
     }
-    
 }
 const handleOutside = ()=>{
     showList.value = false;
@@ -166,12 +163,18 @@ const handleProduct = ()=>{
     }
     navigateTo('/selling')
 }   
+const handleTopup = ()=>{
+    if (!isValidToken.value){
+        navigateTo('/login')
+        return
+    }
+    navigateTo('/topup');
+}
 </script>
 
 <template>
-    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @topup="handleTopup" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
-        <!-- Part of showing product  -->
          <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
     </section>
     <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="handleBuyItem" @add="Adding" @remove="Cancle"/>
