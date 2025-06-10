@@ -4,5 +4,19 @@ export const useFetchAPI = (request,object)=>{
 }
 export const useFetchAPIMounted = async (request,object) =>{
     const config = useRuntimeConfig();
-    return $fetch(request, {baseURL: config.public.baseApiUrl,...object});
+    try{
+        const response = $fetch(request, {baseURL: config.public.baseApiUrl,...object});
+        return response;
+    }catch(err){
+        if (err.response && err.response._data){
+            const backendErrorData = err.response._data;
+            const customError = new Error(
+                backendErrorData.error || backendErrorData.message || `An error occurred with status ${err.response.status}`
+            )
+            customError.statusCode = err.response.status;
+            customError.data = backendErrorData;
+            throw customError;
+        }
+        throw err
+    }
 }

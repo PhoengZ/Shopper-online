@@ -1,14 +1,14 @@
 package controllers
 
-import "net/http"
+import (
+	"backend/utils/response"
+	"net/http"
+)
 
 func Request(w http.ResponseWriter, r *http.Request) {
-
+	response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "test failed"})
 }
 
-func Confirm(w http.ResponseWriter, r *http.Request) {
-
-}
 func GetHistory(w http.ResponseWriter, r *http.Request) {
 
 }

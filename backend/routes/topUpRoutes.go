@@ -10,6 +10,5 @@ import (
 
 func RegisterationTopUp(r *mux.Router) {
 	r.Handle("/topup/request", middlewares.AuthMiddleware(http.HandlerFunc(controllers.Request))).Methods("POST")
-	r.Handle("/topup/confirm", middlewares.AuthMiddleware(http.HandlerFunc(controllers.Confirm))).Methods("POST")
 	r.Handle("/topup/history", middlewares.AuthMiddleware(http.HandlerFunc(controllers.GetHistory))).Methods("GET")
 }

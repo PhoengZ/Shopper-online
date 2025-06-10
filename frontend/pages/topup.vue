@@ -1,10 +1,15 @@
 <script setup>
+import User from '~/components/Icon/User.vue'
+import { requestTransaction } from '~/repositories/topup'
+import { useAuthStore } from '~/Stores/auth'
+
 definePageMeta({
     layout:'auth',
 })
 useHead({
     title:'Top up'
 })
+const user = useAuthStore()
 const money = ref(1)
 const {handleSubmit, isSubmiting} = useForm({
     validationSchema:usePaymentValidationSchema(),
@@ -17,8 +22,12 @@ const prevClick = ()=>{
     navigateTo("/")
 }
 const confirmClick = handleSubmit(async (value)=>{
-    console.log("isClick");
-})
+    try{
+        const {message} = await requestTransaction(user.userID, value * 2, user.token)
+    }catch(err){
+        console.error(err.data.message)
+    }
+})  
 
 const totalCoin = ref(money.value * 2)
 watch(money, newValue =>{
