@@ -5,16 +5,24 @@ definePageMeta({
 useHead({
     title:'Top up'
 })
+const money = ref(1)
 const {handleSubmit, isSubmiting} = useForm({
     validationSchema:usePaymentValidationSchema(),
     validateOnInput:true,
+    initialValues:{
+        amount:money.value || 1
+    }
 })
-const money = ref()
 const prevClick = ()=>{
     navigateTo("/")
 }
-const confirmClick = handleSubmit(async value=>{
+const confirmClick = handleSubmit(async (value)=>{
+    console.log("isClick");
+})
 
+const totalCoin = ref(money.value * 2)
+watch(money, newValue =>{
+    totalCoin.value = newValue * 2;
 })
 </script>
 <template>
@@ -27,10 +35,12 @@ const confirmClick = handleSubmit(async value=>{
         <div class="font-bold text-lg flex justify-end"><img src="../assets/Image/PromptPay.png" alt="" class=" h-10 w-20 my-auto"></div>
         <hr class=" col-span-2 border-t-2 border-gray-600 my-5">
         <div class="flex items-center text-left font-bold text-lg">Amount to be paid</div>
-        <div class="font-bold text-lg flex justify-end">
+        <div class="font-bold text-lg flex justify-end h-fit">
             <BaseInput name="amount" :-update="true" width="w-full" placeholder="Amount to be paid" v-model:modelvalue="money" type="number"/>
         </div>
+        <div class="flex items-center text-left font-bold text-lg">Amount coin</div>
+        <div class="font-bold text-lg flex justify-end">{{totalCoin}}</div>
     </div>
-    <BaseButton size="large" theme="second" @click="">{{isSubmiting ? 'Confirming' : 'Confirm'}}</BaseButton>
+    <BaseButton size="large" theme="second" @click="confirmClick">{{isSubmiting ? 'Confirming...' : 'Confirm'}}</BaseButton>
     
 </template>
