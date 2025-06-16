@@ -117,3 +117,13 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success updating profile"})
 }
+func GetUserDisplay(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	Id := vars["id"]
+	res, err := services.GetUserDisplay(Id)
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
+		return
+	}
+	response.JSONResponse(w, http.StatusOK, res)
+}

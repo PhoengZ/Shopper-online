@@ -28,7 +28,6 @@ const handleEdit = ()=>{
     emit('edit')
 }
 const submitAdd = handleSubmit(values=>{
-  // console.log("Submitting product:", product.value);
   emit('submit', product.value)
 })
 const categoryAdd = (value)=>{

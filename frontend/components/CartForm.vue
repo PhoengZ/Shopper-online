@@ -1,5 +1,5 @@
 <script setup>
-const emit = defineEmits(['remove','add'])
+const emit = defineEmits(['remove','add','buy'])
 const prop = defineProps(
     {
         item:Array,
@@ -15,7 +15,7 @@ const buyItem = ()=>{
     emit('buy',selectedItem.value,totalPrice.value)
 }
 const totalPrice = computed(() =>
-  prop.item.reduce((sum, i) => sum + i.price * (i.quantity == null ? 1 : i.quantity),0)
+  selectedItem.value.reduce((sum, i) => sum + i.price ,0)
 )
 const selectedItem = ref([])
 </script>

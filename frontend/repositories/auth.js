@@ -80,16 +80,12 @@ export function updateProfile(id,profile,token){
     })
 }
 
-// export function updatePaying(id,value,token){
-//     return useFetchAPIMounted('/auth/updatePaying',{
-//         method:'patch',
-//         headers:{
-//             Authorization:`Bearer ${token}`
-//         },
-//         body:{
-//             id:id,
-//             coin:value,
-//         }
-//     })
-// }
+export function GetUserDisplay(id,token){
+    return useFetchAPI(`/auth/getUserDisplay/${id}`,{
+        method:'get',
+        headers:{
+            Authorization:`Bearer ${token}`
+        }
+    })
+}
 

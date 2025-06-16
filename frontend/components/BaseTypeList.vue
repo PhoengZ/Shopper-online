@@ -6,7 +6,7 @@ const prop = defineProps({
     selectedItem:Array,
     selectedSortOption:Boolean
 });
-const emit = defineEmits(['logout','update:selectedItem','update:selectedSortOption','profile','product']);
+const emit = defineEmits(['logout','update:selectedItem','update:selectedSortOption','profile','product','topup']);
 
 const handleClick = (item)=>{
     if (item === 'Logout' && prop.mode === 'account'){
@@ -19,6 +19,10 @@ const handleClick = (item)=>{
     }
     if (item === 'Product' && prop.mode === 'account'){
         emit('product')
+        return
+    }
+    if (item == 'Top up' && prop.mode === 'account'){
+        emit('topup')
         return
     }
 

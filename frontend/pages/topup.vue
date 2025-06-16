@@ -1,0 +1,64 @@
+<script setup>
+import User from '~/components/Icon/User.vue'
+import { updateProfile } from '~/repositories/auth'
+import { requestTransaction } from '~/repositories/topup'
+import { useAuthStore } from '~/Stores/auth'
+
+definePageMeta({
+    layout:'auth',
+})
+useHead({
+    title:'Top up'
+})
+const user = useAuthStore()
+const money = ref(1)
+const {handleSubmit, isSubmiting} = useForm({
+    validationSchema:usePaymentValidationSchema(),
+    validateOnInput:true,
+    initialValues:{
+        amount:money.value || 1
+    }
+})
+const prevClick = ()=>{
+    navigateTo("/")
+}
+const confirmClick = handleSubmit(async (value)=>{
+    const object = {
+        "password":"",
+        "address":"",
+        "coin":value.amount*2,
+        "history":[]
+    }
+    try{
+        const {message_1} = await requestTransaction(user.userID, value.amount * 2, user.token)
+        const {message_2} = await updateProfile(user.userID, object, user.token)
+        console.log("Pass");
+    }catch(err){
+        console.error(err.data)
+    }
+})  
+
+const totalCoin = ref(money.value * 2)
+watch(money, newValue =>{
+    totalCoin.value = newValue * 2;
+})
+</script>
+<template>
+    <BaseButton class=" absolute" size="small" theme="circular" @click="prevClick">
+        <IconBackArrow color="#000000" class="absolute"/>
+    </BaseButton>
+    <h3 class="text-center text-3xl rounded-t-2xl p-3 text-gray-700 font-bold flex justify-center items-center gap-5"><img src="../assets/Image/thai_qr_payment.png" alt="" class="h-10 w-10">Payment</h3>
+    <div class=" grid grid-cols-2 px-10">
+        <div class="flex items-center text-left font-bold text-lg">Also Pay</div>
+        <div class="font-bold text-lg flex justify-end"><img src="../assets/Image/PromptPay.png" alt="" class=" h-10 w-20 my-auto"></div>
+        <hr class=" col-span-2 border-t-2 border-gray-600 my-5">
+        <div class="flex items-center text-left font-bold text-lg">Amount to be paid</div>
+        <div class="font-bold text-lg flex justify-end h-fit">
+            <BaseInput name="amount" :-update="true" width="w-full" placeholder="Amount to be paid" v-model:modelvalue="money" type="number"/>
+        </div>
+        <div class="flex items-center text-left font-bold text-lg">Amount coin</div>
+        <div class="font-bold text-lg flex justify-end">{{totalCoin}}</div>
+    </div>
+    <BaseButton size="large" theme="second" @click="confirmClick">{{isSubmiting ? 'Confirming...' : 'Confirm'}}</BaseButton>
+    
+</template>
