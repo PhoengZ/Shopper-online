@@ -241,3 +241,21 @@ func UpdateProfile(id string, newProfile map[string]interface{}) error {
 	}
 	return nil
 }
+func GetUserDisplay(id string) (map[string]interface{}, error) {
+	collection := config.GetCollection("User")
+	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancle()
+
+	var user models.User
+	objID, err := primitive.ObjectIDFromHex(id)
+	if err != nil {
+		return map[string]interface{}{}, errors.New("Invalid type id")
+	}
+	err = collection.FindOne(ctx, bson.M{"_id": objID}).Decode(&user)
+	if err != nil {
+		return map[string]interface{}{}, errors.New("Failed to fetch from mongo")
+	}
+	response := make(map[string]interface{})
+	response["coin"] = user.Coin
+	return response, nil
+}

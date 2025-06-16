@@ -6,7 +6,7 @@ export function requestTransaction(userID, amount, token){
         },
         body:{
             userID:userID,
-            amount:amount,
+            amount:amount
         }
     })
 }

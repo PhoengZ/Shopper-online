@@ -24,6 +24,16 @@ const name = ref('');
 const userID = ref('');
 let showSetting = ref(false);
 const choiceItem = ref([]);
+// const getDisplay = await user.getUserDisplay()
+// if (!getDisplay){
+//     navigateTo('/')
+// }else{
+//     console.log("get");
+// }
+const checkUser = await user.getUserDisplay()
+if (!checkUser){
+    console.error("Test Error")
+}
 const {data:response, er, status} = await getCategories();
 if (status.value === 'error'){
     console.error('Failed to fetch categories', er.value);
@@ -173,7 +183,7 @@ const handleTopup = ()=>{
 </script>
 
 <template>
-    <TheHeader :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @topup="handleTopup" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :coin="user.coin" :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @topup="handleTopup" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
          <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
     </section>

@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { decodeToken } from "~/composables/Decodetoken";
-import { LoginApi, registerApi } from "~/repositories/auth";
+import { GetUserDisplay, LoginApi, registerApi } from "~/repositories/auth";
 
 export const useAuthStore = defineStore('auth',()=>{
     const user = ref({
@@ -11,6 +11,7 @@ export const useAuthStore = defineStore('auth',()=>{
     const userError = ref('');
     const userID = ref('');
     const Username = ref('');
+    const coin = ref(0);
     const token = computed(()=>user.value.token);
     const canEdit = computed(()=>user.value.LoggedIn);
     async function Login(username,password) {
@@ -37,6 +38,15 @@ export const useAuthStore = defineStore('auth',()=>{
         Username.value = item.username;
         userID.value = item.userID;
     }
+    async function getUserDisplay(){
+        const {data: response, error, status} = await GetUserDisplay(userID.value,token.value)
+        if (status === 'error'){
+            userError.value = error.value;
+            return false;
+        }
+        coin.value = response.value.coin
+        return true
+    }
     async function Logout() {
         user.value.LoggedIn = false;
         user.value.token = '';
@@ -57,12 +67,14 @@ export const useAuthStore = defineStore('auth',()=>{
         user,
         userError,
         userID,
+        coin,
         token,
         canEdit,
         Username,
         setUser,
         Login,
         Logout,
-        Register
+        Register,
+        getUserDisplay
     }
 });

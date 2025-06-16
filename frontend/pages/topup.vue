@@ -1,5 +1,6 @@
 <script setup>
 import User from '~/components/Icon/User.vue'
+import { updateProfile } from '~/repositories/auth'
 import { requestTransaction } from '~/repositories/topup'
 import { useAuthStore } from '~/Stores/auth'
 
@@ -22,10 +23,18 @@ const prevClick = ()=>{
     navigateTo("/")
 }
 const confirmClick = handleSubmit(async (value)=>{
+    const object = {
+        "password":"",
+        "address":"",
+        "coin":value.amount*2,
+        "history":[]
+    }
     try{
-        const {message} = await requestTransaction(user.userID, value * 2, user.token)
+        const {message_1} = await requestTransaction(user.userID, value.amount * 2, user.token)
+        const {message_2} = await updateProfile(user.userID, object, user.token)
+        console.log("Pass");
     }catch(err){
-        console.error(err.data.message)
+        console.error(err.data)
     }
 })  
 

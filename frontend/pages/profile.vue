@@ -49,9 +49,7 @@ const EditAddress = async ()=>{
         "password":"",
         "address":address.value,
         "coin":0,
-        "history":{
-          
-        }
+        "history":[]
     }
     const {message}  = await updateProfile(userID.value, object, token.value)
     if (message === 'Success updating profile'){

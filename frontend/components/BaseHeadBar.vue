@@ -2,6 +2,7 @@
 
 const prop = defineProps({
     username:String,
+    coin:Number,
     isShow:Boolean,
 })
 const emit = defineEmits(['isDropuser','logout','checkItem','profile','getproduct','topup']);
@@ -24,7 +25,7 @@ const handleTopup = ()=>{
     emit('topup');
 }
 let isShow = computed(()=>prop.isShow)
-const proc = ref(["Profile","Product","Top up","Coin: 0","Logout",]);
+const proc = ref(["Profile","Product","Top up","Coin: "+prop.coin,"Logout",]);
 </script>
 
 <template>
