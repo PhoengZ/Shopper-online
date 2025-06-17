@@ -2,7 +2,7 @@
 import { getProfile, updateProfile, validateToken } from '~/repositories/auth'
 import { useAuthStore } from '~/Stores/auth'
 
-definePageMeta({ layout: false })
+const {$toast} = useNuxtApp()
 useHead({ title: "Profile" })
 const user = useAuthStore()
 const username = ref('')
@@ -51,11 +51,20 @@ const EditAddress = async ()=>{
         "coin":0,
         "history":[]
     }
-    const {message}  = await updateProfile(userID.value, object, token.value)
-    if (message === 'Success updating profile'){
+    try{
+      const {message}  = await updateProfile(userID.value, object, token.value)
+      $toast.success(message,{
+        style:{
+          background:'green',
+          color:'white'
+        }
+      })
       isEditAddress.value = !isEditAddress.value
-    }else{
-      console.error('Failed to update address', message)
+    }catch(err){
+      console.error('Failed to update address', err)
+      $toast.error('ไม่สามารถแก้ไขที่อยู่ได้',{
+        description:'รายละเอียด: '+err.data.error
+      })
     }
   }else{
     isEditAddress.value = !isEditAddress.value

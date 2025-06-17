@@ -6,8 +6,8 @@ const pops = defineProps({
 
 const emit = defineEmits(['click']);
 
-const s = differentButtonSize(pops.size);
-const v = differentVariant(pops.theme);
+const s = computed(()=>differentButtonSize(pops.size))
+const v = computed(()=>differentVariant(pops.theme))
 const handleClick = () => {
     emit('click');
 };

@@ -2,9 +2,7 @@
 import { addStoreItem, editStoreItem, getStoreItem, removeStoreItem } from '~/repositories/product'
 import { useAuthStore } from '~/Stores/auth'
 
-definePageMeta({
-    layout:'auth'
-})
+const {$toast} = useNuxtApp()
 useHead({
     title:"My store"
 })
@@ -14,6 +12,11 @@ const prevClick = ()=>{
     navigateTo('/')
 }
 const {data, error:err, status} = await getStoreItem(user.userID, user.token)
+if (status === 'error'){
+  $toast.error('ไม่สามารถโหลดสินค้าได้',{
+    description:'รายละเอียด: '+err.value
+  })
+}
 const products = data.value?.products
 var curProducts = ref([])
 var outProducts = ref([])
@@ -35,13 +38,23 @@ for (let i in products){
   }
 }
 const handleRemove = async(id) =>{
-  const {message} = await removeStoreItem(id, user.token)
-  if (message === "Product deleted successfully"){
+  try{
+    const {message} = await removeStoreItem(id, user.token)
     curProducts.value = curProducts.value.filter(p => p.id !== id)
     outProducts.value = outProducts.value.filter(p => p.id !== id)
-  } else {
-    console.error("Error removing product:", message)
+    $toast.success(message,{
+      style:{
+        background:'green',
+        color:'white'
+      }
+    })
+  }catch(err){
+    console.error("Error removing product:", err.data.error)
+    $toast.error('ไม่สามารถลบสินค้าได้',{
+      description:'รายละเอียด: '+err.data.error
+    })
   }
+  
 }
 const handleEdit = (id)=>{
   editingSet.value.add(id)
@@ -62,8 +75,17 @@ const submitAdd = async(item)=>{
     } else {
       outProducts.value.push(product)
     }
-  }catch(e){
-    console.error("Error adding product:", e)
+    $toast.success('เพิ่มรายการสินค้าสำเร็จ',{
+      style:{
+        background:'green',
+        color:'white'
+      }
+    })
+  }catch(err){
+    console.error("Error adding product:", err.data.error)
+    $toast.error('ไม่สามารถลบสินค้าได้',{
+      description:'รายละเอียด: '+err.data.error
+    })
   } 
   addProduct.value = false
 } 
@@ -101,19 +123,33 @@ const submitEdit = async(item)=>{
         curProducts.value = curProducts.value.filter(p => p.id !== product.id)
       }
     }
+    $toast.success('แก้ไขรายการสินค้าสำเร็จ',{
+      style:{
+        background:'green',
+        color:'white'
+      }
+    })
   }catch(error){
-    console.error("Error editing product:", error?.data?.message);
+    console.error("Error editing product:", error?.data?.error);
+    $toast.error('ไม่สามารถแก้ไขสินค้าได้',{
+      description:'รายละเอียด: '+err.data.error
+    })
   }
 }
 </script>
 <template>
-    <BaseButton class=" absolute" size="small" theme="circular" @click="prevClick">
-        <IconBackArrow color="#000000" class="absolute"/>
-    </BaseButton>
-    <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5"><IconCheckList color="#000000" /> Currently selling</h1>
-    <BaseStoreList :products="curProducts" @remove="handleRemove" @edit="handleEdit" @submit="submitEdit" :editing-i-d="editingSet"/>
-    <BaseStoreItem v-if="addProduct" :edit-mode="addProduct" :item="newItem" @submit="submitAdd"/>
-    <BaseButton size="small" theme="first" class=" flex items-center justify-center" @click="handleAdd"><IconPlus color="#ffffff"/></BaseButton>
-    <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5 border-t-2 pt-4"><IconCheckList color="#000000"/>Out of stock</h1>
-    <BaseStoreList :products="outProducts" @remove="handleRemove" @edit="handleEdit" @submit="submitEdit" :editing-i-d="editingSet"/>
+  <div class="min-h-screen w-full bg-gray-100 py-16 px-4 flex justify-center items-start">
+      <section class="bg-white w-full max-w-4xl rounded-3xl shadow-xl p-8 flex flex-col gap-8">
+          <BaseButton class=" absolute" size="small" theme="circular" @click="prevClick">
+          <IconBackArrow color="#000000" class="absolute"/>
+          </BaseButton>
+          <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5"><IconCheckList color="#000000" /> Currently selling</h1>
+          <BaseStoreList :products="curProducts" @remove="handleRemove" @edit="handleEdit" @submit="submitEdit" :editing-i-d="editingSet"/>
+          <BaseStoreItem v-if="addProduct" :edit-mode="addProduct" :item="newItem" @submit="submitAdd"/>
+          <BaseButton size="small" theme="first" class=" flex items-center justify-center" @click="handleAdd"><IconPlus color="#ffffff"/></BaseButton>
+          <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5 border-t-2 pt-4"><IconCheckList color="#000000"/>Out of stock</h1>
+          <BaseStoreList :products="outProducts" @remove="handleRemove" @edit="handleEdit" @submit="submitEdit" :editing-i-d="editingSet"/>
+      </section>
+  </div>
+    
 </template>

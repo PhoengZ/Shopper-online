@@ -19,7 +19,7 @@ func Request(w http.ResponseWriter, r *http.Request) {
 	}
 	err = services.MakeRequest(object.UserID, object.Amount)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success requset"})
