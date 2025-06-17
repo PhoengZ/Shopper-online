@@ -34,7 +34,7 @@ try{
 const choiceItem = ref([]);
 const checkUser = await user.getUserDisplay()
 if (!checkUser){
-    console.error("Test Error")
+    navigateTo('/login');
 }
 const {data:response, error:er, status} = await getCategories();
 if (status.value === 'error'){
