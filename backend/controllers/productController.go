@@ -13,7 +13,29 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func CountProduct(w http.ResponseWriter, r *http.Request) {
+	total, err := services.CountProduct()
+	if err != nil {
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
+		return
+	}
+	stringTotal := strconv.Itoa(total)
+	response.JSONResponse(w, http.StatusOK, map[string]string{"total": stringTotal})
+}
+
 func GetProducts(w http.ResponseWriter, r *http.Request) {
+	page := r.URL.Query().Get("page")
+	limit := r.URL.Query().Get("limit")
+	Intlimit, err := strconv.Atoi(limit)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Failed to convert limit url string to int"})
+		return
+	}
+	Intpage, err := strconv.Atoi(page)
+	if err != nil {
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Failed to convert page url string to int"})
+		return
+	}
 	itemName := r.URL.Query().Get("name")
 	categoryParam := r.URL.Query().Get("category")
 	var category []string
@@ -27,12 +49,13 @@ func GetProducts(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		Iprice = true
 	}
-	listProduct, err := services.GetProducts(itemName, category, Iprice)
+	listProduct, total, err := services.GetProducts(itemName, category, Iprice, Intpage, Intlimit)
 	if err != nil {
 		response.JSONResponse(w, http.StatusInternalServerError, map[string]string{"error": "Failed to fetch products"})
 		return
 	}
-	response.JSONResponse(w, http.StatusOK, listProduct)
+	stringTotal := strconv.Itoa(total)
+	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"object": listProduct, "total": stringTotal})
 }
 func GetProductByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
@@ -58,7 +81,7 @@ func GetProductSellingByID(w http.ResponseWriter, r *http.Request) {
 	uid := vars["id"]
 	item, err := services.GetSellingByID(uid)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "Failed to get item"})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": "Failed to get item"})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"products": item})
@@ -66,22 +89,22 @@ func GetProductSellingByID(w http.ResponseWriter, r *http.Request) {
 func CreateItem(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20) // 10 MB litmit
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Failed to parse form data because to large"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Failed to parse form data because to large"})
 		return
 	}
 	imageURL, err := utils.UploadImage("file", r)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 		return
 	}
 	price, err := strconv.Atoi(r.FormValue("price"))
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid price format"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid price format"})
 		return
 	}
 	quantity, err := strconv.Atoi(r.FormValue("quantity"))
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid quantity format"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid quantity format"})
 		return
 	}
 	ctg := strings.Split(r.FormValue("category"), ",")
@@ -99,7 +122,7 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 	}
 	product, err := services.CreateItem(item)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"product": product})
@@ -108,24 +131,24 @@ func CreateItem(w http.ResponseWriter, r *http.Request) {
 func EditItem(w http.ResponseWriter, r *http.Request) {
 	err := r.ParseMultipartForm(10 << 20)
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Failed to parse form data because to large"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Failed to parse form data because to large"})
 		return
 	}
 	check, err := utils.HavingFieldImage(r)
 	if err != nil {
 		if check {
-			response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Failed to parse form data because something"})
+			response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Failed to parse form data because something"})
 			return
 		}
 	}
 	price, err := strconv.Atoi(r.FormValue("price"))
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid price format"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid price format"})
 		return
 	}
 	quantity, err := strconv.Atoi(r.FormValue("quantity"))
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid quantity format"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid quantity format"})
 		return
 	}
 	ctg := strings.Split(r.FormValue("category"), ",")
@@ -144,7 +167,7 @@ func EditItem(w http.ResponseWriter, r *http.Request) {
 	if check {
 		item.URL, err = utils.UploadImage("file", r)
 		if err != nil {
-			response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "failed to upload image"})
+			response.JSONResponse(w, http.StatusConflict, map[string]string{"error": "failed to upload image"})
 			return
 		}
 	} else {
@@ -152,7 +175,7 @@ func EditItem(w http.ResponseWriter, r *http.Request) {
 	}
 	product, err := services.EditItem(item)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"product": product})
@@ -163,12 +186,12 @@ func DeleteItem(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewDecoder(r.Body).Decode(&payload)
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid request payload"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
 		return
 	}
 	err = services.DeleteItem(payload.PID)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "Failed to delete product"})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": "Failed to delete product"})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Product deleted successfully"})

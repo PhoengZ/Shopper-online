@@ -15,7 +15,7 @@ func GetProfile(w http.ResponseWriter, r *http.Request) {
 	Id := vars["id"]
 	profile, err := services.GetProfile(Id)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 	}
 	response.JSONResponse(w, http.StatusOK, profile)
 }
@@ -60,7 +60,7 @@ func GetCartList(w http.ResponseWriter, r *http.Request) {
 	Id := vars["id"]
 	cartList, err := services.GetCartListByID(Id)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]interface{}{"products": cartList})
@@ -72,12 +72,12 @@ func AddItemToCart(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewDecoder(r.Body).Decode(&object)
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
 	err = services.AddItemOnCart(object.Id, object.Product)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success adding item"})
 }
@@ -89,12 +89,12 @@ func RemoveItemOnCart(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewDecoder(r.Body).Decode(&object)
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": err.Error()})
 		return
 	}
 	err = services.RemoveItemOnCart(object.UserId, object.ItemId)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": err.Error()})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": err.Error()})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success removing"})
@@ -107,12 +107,12 @@ func UpdateProfile(w http.ResponseWriter, r *http.Request) {
 	}
 	err := json.NewDecoder(r.Body).Decode(&object)
 	if err != nil {
-		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"message": "Invalid request payload"})
+		response.JSONResponse(w, http.StatusBadRequest, map[string]string{"error": "Invalid request payload"})
 		return
 	}
 	err = services.UpdateProfile(object.Id, object.Profile)
 	if err != nil {
-		response.JSONResponse(w, http.StatusConflict, map[string]string{"message": "Failed to update profile"})
+		response.JSONResponse(w, http.StatusConflict, map[string]string{"error": "Failed to update profile"})
 		return
 	}
 	response.JSONResponse(w, http.StatusOK, map[string]string{"message": "Success updating profile"})

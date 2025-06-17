@@ -1,5 +1,5 @@
-export function getProduct (){
-    return useFetchAPI("/products",{
+export function getProduct (page, limit){
+    return useFetchAPIMounted(`/products?page=${page}&limit=${limit}`,{
         method:'get'
     })
 }
@@ -8,8 +8,8 @@ export function getProductByID (id){
         method:'get'
     })
 }
-export function getProductBySearching (data){
-    return useFetchAPIMounted(`/products?name=${data.name}&price=${data.price}&category=${data.category.join(",")}`,{
+export function getProductBySearching (data,page,limit){
+    return useFetchAPIMounted(`/products?name=${data.name}&price=${data.price}&category=${data.category.join(",")}&page=${page}&limit=${limit}`,{
         method:'get',
     })
 }
@@ -50,5 +50,11 @@ export function editStoreItem(product, token){
             Authorization:`Bearer ${token}`
         },
         body:product
+    })
+}
+
+export function getCountProduct(){
+    return useFetchAPI('/product/count',{
+        method:'get'
     })
 }

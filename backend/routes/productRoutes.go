@@ -11,6 +11,7 @@ import (
 func RegisterProductRoutes(r *mux.Router) {
 	r.HandleFunc("/products", controllers.GetProducts).Methods("GET")
 	r.HandleFunc("/products/{id}", controllers.GetProductByID).Methods("GET")
+	r.HandleFunc("/product/count", controllers.CountProduct).Methods("GET")
 	r.Handle("/auth/getStoreItem/{id}", middlewares.AuthMiddleware(http.HandlerFunc(controllers.GetProductSellingByID))).Methods("GET")
 	r.Handle("/auth/addStoreItem", middlewares.AuthMiddleware(http.HandlerFunc(controllers.CreateItem))).Methods("POST")
 	r.Handle("/auth/editStoreItem", middlewares.AuthMiddleware(http.HandlerFunc(controllers.EditItem))).Methods("PATCH")

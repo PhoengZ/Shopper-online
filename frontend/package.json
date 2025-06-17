@@ -19,6 +19,8 @@
     "pinia": "^3.0.1",
     "vue": "latest",
     "vue-router": "^4.5.0",
+    "vue-sonner": "^2.0.0",
+    "vue-toastification": "^1.7.14",
     "vue3-tags-input": "^1.0.12",
     "yup": "^1.6.1"
   },

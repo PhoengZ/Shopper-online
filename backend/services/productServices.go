@@ -13,7 +13,19 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-func GetProducts(itemName string, category []string, price bool) ([]map[string]interface{}, error) {
+func CountProduct() (int, error) {
+	collection := config.GetCollection("Product")
+	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	defer cancel()
+
+	total, err := collection.CountDocuments(ctx, bson.M{})
+	if err != nil {
+		return 0, errors.New("failed to access database")
+	}
+	return int(total), nil
+}
+
+func GetProducts(itemName string, category []string, price bool, page, limit int) ([]map[string]interface{}, int, error) {
 	collection := config.GetCollection("Product")
 	ctx, cancle := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancle()
@@ -43,19 +55,26 @@ func GetProducts(itemName string, category []string, price bool) ([]map[string]i
 	} else {
 		sortPrice.SetSort(bson.D{{Key: "price", Value: 1}})
 	}
+	sortPrice.SetLimit(int64(limit))
+	skip := (page - 1) * limit
+	sortPrice.SetSkip(int64(skip))
 	cursor, err := collection.Find(ctx, filter, sortPrice)
 	if err != nil {
-		return product, err
+		return product, 0, err
+	}
+	total, err := collection.CountDocuments(ctx, filter)
+	if err != nil {
+		return []map[string]interface{}{}, 0, err
 	}
 	for cursor.Next(ctx) {
 		var prod map[string]interface{}
 		err = cursor.Decode(&prod)
 		if err != nil {
-			return []map[string]interface{}{}, err
+			return []map[string]interface{}{}, 0, err
 		}
 		product = append(product, prod)
 	}
-	return product, nil
+	return product, int(total), nil
 }
 
 func GetProductByID(productID string) (map[string]interface{}, error) {
