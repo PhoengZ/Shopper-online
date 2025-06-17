@@ -15,9 +15,12 @@ import (
 var client *mongo.Client
 
 func ConnectDB() *mongo.Client {
-	err := godotenv.Load()
-	if err != nil {
-		log.Fatal("Error loading .env file")
+	var err error = nil
+	if os.Getenv("VERCEL") == "" {
+		err = godotenv.Load()
+		if err != nil {
+			log.Fatal("Failed to load .env")
+		}
 	}
 	mongoURI := os.Getenv("MONGO_URI")
 	if mongoURI == "" {
