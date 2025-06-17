@@ -33,8 +33,9 @@ try{
 }
 const choiceItem = ref([]);
 const checkUser = await user.getUserDisplay()
-if (!checkUser){
-    console.error("Test Error")
+const coin = ref(0)
+if (checkUser){
+    coin.value = user.coin
 }
 const {data:response, error:er, status} = await getCategories();
 if (status.value === 'error'){
@@ -243,7 +244,7 @@ const changePage = async(page)=>{
 </script>
 
 <template>
-    <TheHeader :coin="user.coin" :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @topup="handleTopup" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
+    <TheHeader :coin="coin" :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @topup="handleTopup" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
     <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
          <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
     </section>

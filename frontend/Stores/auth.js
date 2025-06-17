@@ -40,7 +40,7 @@ export const useAuthStore = defineStore('auth',()=>{
     }
     async function getUserDisplay(){
         const {data: response, error, status} = await GetUserDisplay(userID.value,token.value)
-        if (status === 'error'){
+        if (status === 'error' || error.value){
             userError.value = error.value;
             return false;
         }

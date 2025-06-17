@@ -23,7 +23,7 @@ function onRegsiter(){
 }
 function onForgetpass(){
     console.log('yo');
-    
+    //implement ลืมรหัสผ่าน
 }
 </script>
 <template>
