@@ -1,5 +1,5 @@
 export function LoginApi(username,password){
-    return useFetchAPI('/auth/login',{
+    return useFetchAPI('api/auth/login',{
         method:'post',
         body:{
             username,
@@ -9,7 +9,7 @@ export function LoginApi(username,password){
 }
 
 export function registerApi(username,password){
-    return useFetchAPI('/auth/register',{
+    return useFetchAPI('api/auth/register',{
        method:'post',
        body:{
             username,
@@ -18,7 +18,7 @@ export function registerApi(username,password){
     });
 }
 export function validateToken(token){
-    return useFetchAPI('/validate',{
+    return useFetchAPI('api/validate',{
         method:'post',
         body:{
             token:token
@@ -26,7 +26,7 @@ export function validateToken(token){
     })
 }
 export function getCartItem(id,token){
-    return useFetchAPIMounted(`/cartList/${id}`,{
+    return useFetchAPIMounted(`api/cartList/${id}`,{
         method:'get',
         headers:{
             Authorization:`Bearer ${token}`
@@ -34,7 +34,7 @@ export function getCartItem(id,token){
     })
 }
 export function addItem(product,id,token){
-    return useFetchAPIMounted('/addCartItem',{
+    return useFetchAPIMounted('api/addCartItem',{
         method:'post',
         headers:{
             Authorization:`Bearer ${token}`
@@ -46,7 +46,7 @@ export function addItem(product,id,token){
     })
 }
 export function removeItem(userId, productId,token){
-    return useFetchAPIMounted('/removeCartItem',{
+    return useFetchAPIMounted('api/removeCartItem',{
         method:'patch',
         headers:{
             Authorization:`Bearer ${token}`
@@ -59,7 +59,7 @@ export function removeItem(userId, productId,token){
 }
 
 export function getProfile(id,token){
-    return useFetchAPI(`/auth/getProfile/${id}`,{
+    return useFetchAPI(`api/auth/getProfile/${id}`,{
         method:'get',
         headers:{
             Authorization:`Bearer ${token}`
@@ -68,7 +68,7 @@ export function getProfile(id,token){
 }
 
 export function updateProfile(id,profile,token){
-    return useFetchAPIMounted('/auth/updateProfile',{
+    return useFetchAPIMounted('api/auth/updateProfile',{
         method:'patch',
         headers:{
             Authorization:`Bearer ${token}`
@@ -81,7 +81,7 @@ export function updateProfile(id,profile,token){
 }
 
 export function GetUserDisplay(id,token){
-    return useFetchAPI(`/auth/getUserDisplay/${id}`,{
+    return useFetchAPI(`api/auth/getUserDisplay/${id}`,{
         method:'get',
         headers:{
             Authorization:`Bearer ${token}`

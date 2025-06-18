@@ -1,5 +1,5 @@
 export function requestTransaction(userID, amount, token){
-    return useFetchAPIMounted('/topup/request',{
+    return useFetchAPIMounted('api/topup/request',{
         method:'post',
         headers:{
             Authorization:`Bearer ${token}`

@@ -1,5 +1,5 @@
 export function getCategories(){
-    return useFetchAPI("/categories",{
+    return useFetchAPI("api/categories",{
         method:'get'
     })
 }
