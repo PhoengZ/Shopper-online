@@ -26,7 +26,7 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	}
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{domain},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 		AllowedHeaders: []string{"Content-Type", "Authorization"},
 	})
 
