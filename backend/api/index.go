@@ -30,5 +30,6 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		AllowedHeaders: []string{"Content-Type", "Authorization"},
 	})
 
-	c.Handler(router).ServeHTTP(w, r)
+	corsHandler := c.Handler(router)
+	corsHandler.ServeHTTP(w, r)
 }
