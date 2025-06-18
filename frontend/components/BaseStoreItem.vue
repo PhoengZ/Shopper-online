@@ -41,7 +41,7 @@ const categoryAdd = (value)=>{
     <div class="relative border p-5 bg-white rounded-xl shadow-lg hover:shadow-2xl transition-shadow flex gap-5 w-full">
       <BaseImage
         class="w-32 h-32 object-cover rounded-lg"
-        url="https://www.istudio.store/cdn/shop/files/iPhone_16_Pro_White_Titanium_TH_1_1ac3f824-7153-43b1-8211-a2f67cdd5e68.jpg?v=1725929670&width=823"
+        :url="item.url"
       />
       <div class="flex flex-col justify-between w-full">
         <div>
