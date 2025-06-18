@@ -19,7 +19,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	routes.RegisterValidateRoutes(router)
 	routes.RegisterCategoriesRoutes(router)
 	routes.RegisterationTopUp(router)
-
+	router.Methods(http.MethodOptions).HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
 	domain := os.Getenv("FRONTEND_URL")
 	if domain == "" {
 		domain = "https://shopper-online-frontend.vercel.app"
