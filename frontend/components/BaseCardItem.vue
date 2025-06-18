@@ -13,7 +13,7 @@ defineEmits(['buy']);
     :class="height"
   >
     <BaseImage
-      url="https://www.istudio.store/cdn/shop/files/iPhone_16_Pro_White_Titanium_TH_1_1ac3f824-7153-43b1-8211-a2f67cdd5e68.jpg?v=1725929670&width=823"
+      :url="model.url"
       class="w-full h-48 object-cover"
     />
 
