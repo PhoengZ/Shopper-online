@@ -21,6 +21,9 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 	routes.RegisterationTopUp(router)
 
 	domain := os.Getenv("FRONTEND_URL")
+	if domain == "" {
+		domain = "https://shopper-online-frontend.vercel.app"
+	}
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{domain},
 		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "PATCH"},
