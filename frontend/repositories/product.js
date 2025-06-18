@@ -1,20 +1,20 @@
 export function getProduct (page, limit){
-    return useFetchAPIMounted(`api/products?page=${page}&limit=${limit}`,{
+    return useFetchAPIMounted(`/products?page=${page}&limit=${limit}`,{
         method:'get'
     })
 }
 export function getProductByID (id){
-    return useFetchAPI(`api/products/${id}`,{
+    return useFetchAPI(`/products/${id}`,{
         method:'get'
     })
 }
 export function getProductBySearching (data,page,limit){
-    return useFetchAPIMounted(`api/products?name=${data.name}&price=${data.price}&category=${data.category.join(",")}&page=${page}&limit=${limit}`,{
+    return useFetchAPIMounted(`/products?name=${data.name}&price=${data.price}&category=${data.category.join(",")}&page=${page}&limit=${limit}`,{
         method:'get',
     })
 }
 export function getStoreItem(id, token){
-    return useFetchAPI(`api/auth/getStoreItem/${id}`,{
+    return useFetchAPI(`/auth/getStoreItem/${id}`,{
         method:'get',
         headers:{
             Authorization:`Bearer ${token}`
@@ -23,7 +23,7 @@ export function getStoreItem(id, token){
 }
 
 export function addStoreItem(product, token){
-    return useFetchAPIMounted('api/auth/addStoreItem',{
+    return useFetchAPIMounted('/auth/addStoreItem',{
         method:'post',
         headers:{
             Authorization:`Bearer ${token}`
@@ -32,7 +32,7 @@ export function addStoreItem(product, token){
     })
 }
 export function removeStoreItem(productID, token){
-    return useFetchAPIMounted('api/auth/removeStoreItem',{
+    return useFetchAPIMounted('/auth/removeStoreItem',{
         method:'delete',
         headers:{
             Authorization:`Bearer ${token}`
@@ -44,7 +44,7 @@ export function removeStoreItem(productID, token){
 }
 
 export function editStoreItem(product, token){
-    return useFetchAPIMounted('api/auth/editStoreItem',{
+    return useFetchAPIMounted('/auth/editStoreItem',{
         method:'patch',
         headers:{
             Authorization:`Bearer ${token}`
@@ -54,7 +54,7 @@ export function editStoreItem(product, token){
 }
 
 export function getCountProduct(){
-    return useFetchAPI('api/product/count',{
+    return useFetchAPI('/product/count',{
         method:'get'
     })
 }
