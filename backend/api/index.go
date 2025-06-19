@@ -27,10 +27,10 @@ func init() {
 		domain = "https://shopper-online-frontend.vercel.app"
 	}
 	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{domain},
+		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization"},
-		AllowCredentials: true,
+		AllowCredentials: false,
 	})
 
 	router = c.Handler(r)
