@@ -160,6 +160,7 @@ const Cancle = async (item)=>{
 }
 const SearchItem = async (block)=>{
     try{
+        console.log(block);
         const {object,total} = await getProductBySearching(block,nowPage.value,limit.value)
         filter.value = block
         pd.value = object
