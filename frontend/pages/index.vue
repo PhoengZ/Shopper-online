@@ -160,13 +160,14 @@ const Cancle = async (item)=>{
 }
 const SearchItem = async (block)=>{
     try{
+        console.log(block);
         const {object,total} = await getProductBySearching(block,nowPage.value,limit.value)
         filter.value = block
         pd.value = object
         totalPage.value = Math.ceil(Number(total)/limit.value)
         nowPage.value = 1
     }catch(err){
-        console.error(err.data.error)
+        console.error(err)
         $toast.error('ไม่สามารถค้นหารายการสินค้าได้',{
             description:'รายละเอียด: '+err.data.error
         })
@@ -244,11 +245,30 @@ const changePage = async(page)=>{
 </script>
 
 <template>
-    <TheHeader :coin="coin" :choiceItem="choiceItem" :username="name" :isDrop="showSetting" :openBlure="showList" @topup="handleTopup" @getproduct="handleProduct" @profile="handleProfile" @searchItem="SearchItem" @logout="checkLogout" @auth="checkAuth" @checkItem="checkItem"/>
-    <section class="bg-white max-w-screen-lg m-auto px-3" :class="showList ? 'blur-xs':''">
-         <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
-    </section>
-    <BasePagelist :totalPage="totalPage" :nowPage="nowPage" @changePage="changePage"/>
-    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="handleBuyItem" @add="Adding" @remove="Cancle"/>
+    <AppHeader 
+        :coin="coin" 
+        :choiceItem="choiceItem" 
+        :username="name" 
+        :isDrop="showSetting" 
+        :openBlure="showList" 
+        @topup="handleTopup" 
+        @getproduct="handleProduct" 
+        @profile="handleProfile" 
+        @searchItem="SearchItem" 
+        @logout="checkLogout" 
+        @auth="checkAuth" 
+        @checkItem="checkItem"
+    />
+    
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <section class="bg-white rounded-2xl shadow-sm border border-neutral-100 overflow-hidden min-h-[600px]" :class="showList ? 'blur-sm transition duration-300':''">
+             <BaseCardList class="p-6" :product="pd" @buy="Adding" mode="main" />
+        </section>
+        
+        <div class="mt-8 flex justify-center">
+            <BasePagelist :totalPage="totalPage" :nowPage="nowPage" @changePage="changePage"/>
+        </div>
+    </div>
 
+    <CartForm v-if="showList" :item="Item" v-click-outside="handleOutside" @buy="handleBuyItem" @add="Adding" @remove="Cancle"/>
 </template>

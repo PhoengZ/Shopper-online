@@ -38,28 +38,29 @@ watch(selectedSortOption, val => {
 })
 </script>
 <template>
-    <ul class=" rounded-2xl [&>li] w-2xs block">
-        <li v-for="p in prop.product" :key="p">
+    <ul class="bg-white rounded-xl shadow-xl border border-neutral-100 py-2 min-w-[200px]">
+        <li v-for="p in prop.product" :key="p" class="px-1">
             <template v-if="prop.mode === 'account'">
-                <BaseTypeItem @click="() => handleClick(p)">{{p}}</BaseTypeItem>
+                <BaseTypeItem @click="() => handleClick(p)" class="w-full text-left px-4 py-2 rounded-lg text-sm text-neutral-700 hover:bg-neutral-50 hover:text-primary-600 transition-colors">{{p}}</BaseTypeItem>
             </template>
             <template v-else>
-                <div class=" grid grid-cols-2">
-                    <BaseTypeItem >{{p}}</BaseTypeItem>
-                    <div class=" bg-white flex">
+                <div class="p-3 hover:bg-neutral-50 rounded-lg transition-colors">
+                    <div class="font-medium text-sm text-neutral-900 mb-2">{{p}}</div>
+                    <div class="flex flex-col gap-2">
                         <template v-if="p === 'Price'">
-                            <label class=" flex text-xs mx-auto my-auto">
-                                <input type="radio" class=" mx-auto my-auto" :value="false" v-model="selectedSortOption">
-                                มากไปน้อย
+                            <label class="flex items-center cursor-pointer group">
+                                <input type="radio" class="form-radio text-primary-600 focus:ring-primary-500 border-neutral-300" :value="false" v-model="selectedSortOption">
+                                <span class="ml-2 text-sm text-neutral-600 group-hover:text-neutral-900">High to Low</span>
                             </label>
-                            <label class=" flex text-xs mx-auto">
-                                <input type="radio" class=" mx-auto my-auto" :value="true" v-model="selectedSortOption">
-                                น้อยไปมาก
+                            <label class="flex items-center cursor-pointer group">
+                                <input type="radio" class="form-radio text-primary-600 focus:ring-primary-500 border-neutral-300" :value="true" v-model="selectedSortOption">
+                                <span class="ml-2 text-sm text-neutral-600 group-hover:text-neutral-900">Low to High</span>
                             </label>
                         </template>
                         <template v-else>
-                            <label class=" flex text-xs my-auto mx-auto">
-                                <input type="checkbox" class=" mx-auto my-auto" :value="p" v-model="selectedItem">
+                            <label class="flex items-center cursor-pointer group">
+                                <input type="checkbox" class="form-checkbox rounded text-primary-600 focus:ring-primary-500 border-neutral-300" :value="p" v-model="selectedItem">
+                                <span class="ml-2 text-sm text-neutral-600 group-hover:text-neutral-900">Select</span>
                             </label>
                         </template>
                     </div>

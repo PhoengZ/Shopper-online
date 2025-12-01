@@ -15,21 +15,20 @@ const handleBuy = (item)=>{
     }
     emit('buy',object);
 };
-
-
 </script>
+
 <template>
     <template v-if="mode === 'main'">
-        <ul class="grid grid-cols-3 gap-4 ">
-            <li v-for="item in product">
-                <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode"/>
+        <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <li v-for="item in product" :key="item._id" class="flex justify-center">
+                <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode" class="w-full"/>
             </li>
         </ul>
     </template>
     <template v-else-if="mode === 'profile'">
-        <ul class=" overflow-x-auto overflow-y-hidden whitespace-nowrap space-x-4 flex ">
-            <li v-for="item in product">
-                <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode"/>
+        <ul class="flex overflow-x-auto space-x-4 pb-4 scrollbar-hide">
+            <li v-for="item in product" :key="item._id" class="flex-shrink-0 w-64">
+                <BaseCardItem :model="item" @buy="handleBuy" height="h-full" :mode="mode" class="w-full"/>
             </li>
         </ul>
     </template>

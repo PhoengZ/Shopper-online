@@ -16,18 +16,16 @@ const onLogin = ()=>{
 
 </script>
 <template>
-    <form @submit.prevent="onSubmit" class="h-screen flex justify-center items-center bg-gray-200">
-        <div class=" h-8/12 w-6/12 bg-white rounded-4xl flex justify-center items-center flex-col">
-            <h1 class=" text-black font-bold text-6xl mb-10">Sign-up</h1>
-            <BaseInput name="username" placeholder="Username..." height="h-10" width="w-3/4"/>
-            <BaseInput name="password_1" placeholder="Password..." type="password" height="h-10" width="w-3/4"/>
-            <BaseInput name="password_2" placeholder="Verified password..." type="password" height="h-10" width="w-3/4"/>
-            <div class=" flex justify-between w-10/12 mt-5">
-                <BaseButton size="small" theme="fourth" @click="onLogin" type="button">Sign-in</BaseButton>
-                <BaseButton v-if="!isSubmit" size="large" theme="first" type="submit">Sign-up</BaseButton>
-                <BaseButton size="small" theme="fourth" @click="onForget" type="button">Forget
-                    <br>password
-                </BaseButton>
+    <form @submit.prevent="onSubmit" class="min-h-screen flex justify-center items-center bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md w-full space-y-8 bg-white p-10 rounded-2xl shadow-xl border border-neutral-100 flex flex-col items-center">
+            <h1 class="text-center text-3xl font-extrabold text-neutral-900 mb-8">Sign-up</h1>
+            <BaseInput name="username" placeholder="Username..." height="h-12" width="w-full"/>
+            <BaseInput name="password_1" placeholder="Password..." type="password" height="h-12" width="w-full"/>
+            <BaseInput name="password_2" placeholder="Verified password..." type="password" height="h-12" width="w-full"/>
+            <div class="flex justify-between items-center w-full mt-6 space-x-4">
+                <BaseButton size="small" theme="fourth" @click="onLogin" type="button" class="whitespace-nowrap">Sign-in</BaseButton>
+                <BaseButton v-if="!isSubmit" size="large" theme="first" type="submit" class="w-full">Sign-up</BaseButton>
+                <BaseButton size="small" theme="fourth" @click="onForget" type="button" class="text-xs text-right">Forget<br>password</BaseButton>
             </div>
         </div>
     </form>
