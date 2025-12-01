@@ -73,68 +73,74 @@ const EditAddress = async ()=>{
 </script>
 
 <template>
-  <div class="min-h-screen w-full bg-gray-100 py-16 px-4 flex justify-center items-start">
-    <section class="bg-white w-full max-w-4xl rounded-3xl shadow-xl p-8 flex flex-col gap-8">
-        <BaseButton size="small" theme="circular" @click="handleBack"  class="absolute" ><IconBackArrow color="#000000"  class="absolute"/></BaseButton>
-        <h1 class="text-center text-4xl font-bold text-gray-800 flex items-center justify-center gap-5">
-            <IconUser color="#000000"/>Profile</h1>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-        <div class="flex justify-center">
-          <BaseImage
-            url="https://f.ptcdn.info/090/014/000/1388837662-pantiptalk-o.png"
-            class="w-32 h-32 rounded-full border-4 border-blue-400 hover:scale-105 transition-transform duration-300"
-          />
+  <div class="min-h-screen w-full bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8">
+    <section class="bg-white w-full max-w-4xl mx-auto rounded-2xl shadow-sm border border-neutral-100 p-8 flex flex-col gap-8 relative">
+        <div class="absolute top-8 left-8">
+             <BaseButton size="small" theme="circular" @click="handleBack"><IconBackArrow color="#4b5563"/></BaseButton>
         </div>
+        
+        <h1 class="text-center text-3xl font-extrabold text-neutral-900 flex items-center justify-center gap-3 mt-2">
+            <IconUser color="#4f46e5" class="w-8 h-8"/>Profile
+        </h1>
 
-        <div>
-          <h2 class="text-xl font-semibold text-gray-700 mb-2 text-center md:text-left">Delivery Address</h2>
-          <textarea
-            class="w-full h-24 border-2 border-gray-300 rounded-xl px-4 py-2 resize-none text-sm"
-            placeholder="Enter your delivery address..."
-            v-model="address"
-            :disabled="!isEditAddress"
-          ></textarea>
-        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center mt-4">
+            <div class="flex justify-center">
+              <BaseImage
+                url="https://f.ptcdn.info/090/014/000/1388837662-pantiptalk-o.png"
+                class="w-40 h-40 rounded-full border-4 border-primary-100 shadow-md hover:scale-105 transition-transform duration-300 object-cover"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <h2 class="text-lg font-semibold text-neutral-700 text-center md:text-left">Delivery Address</h2>
+              <textarea
+                class="w-full h-32 border border-neutral-300 rounded-lg px-4 py-3 resize-none text-sm focus:outline-none focus:ring-2 focus:ring-primary-500/20 focus:border-primary-500 transition-colors"
+                placeholder="Enter your delivery address..."
+                v-model="address"
+                :disabled="!isEditAddress"
+                :class="{'bg-neutral-50 text-neutral-500': !isEditAddress, 'bg-white text-neutral-900': isEditAddress}"
+              ></textarea>
+            </div>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label class="block text-gray-600 font-medium mb-1">Username</label>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-neutral-700">Username</label>
           <input
             type="text"
-            class="w-full border-2 border-gray-300 rounded-xl px-4 py-2"
+            class="w-full border border-neutral-300 rounded-lg px-4 py-2.5 bg-neutral-50 text-neutral-500 focus:outline-none"
             disabled
             :value="username"
           />
         </div>
-        <div>
-          <label class="block text-gray-600 font-medium mb-1">Password</label>
+        <div class="space-y-1">
+          <label class="block text-sm font-medium text-neutral-700">Password</label>
           <input
             type="password"
-            class="w-full border-2 border-gray-300 rounded-xl px-4 py-2"
+            class="w-full border border-neutral-300 rounded-lg px-4 py-2.5 bg-neutral-50 text-neutral-500 focus:outline-none"
             disabled
             value="ChangePasswordHere"
           />
         </div>
       </div>
 
-      <div class="flex flex-col md:flex-row justify-center gap-4 mt-4">
-        <BaseButton size="small" theme="second" class="px-6" @click="EditAddress">
+      <div class="flex flex-col sm:flex-row justify-center gap-4 mt-4">
+        <BaseButton size="small" theme="second" class="px-8" @click="EditAddress">
           {{ isEditAddress ? 'Save Address' : 'Edit Address' }}
         </BaseButton>
-        <BaseButton size="small" theme="third" class="px-6">Forget Password</BaseButton>
+        <BaseButton size="small" theme="third" class="px-8">Forget Password</BaseButton>
       </div>
 
-      <div class="text-center">
-        <BaseButton size="large" theme="third" class="px-8" @click="signOut">Sign Out</BaseButton>
+      <div class="text-center pt-4 border-t border-neutral-100">
+        <BaseButton size="large" theme="third" class="px-10" @click="signOut">Sign Out</BaseButton>
       </div>
 
-      <div class="w-full bg-gray-100 p-4 rounded-2xl">
-        <BaseOption :flag="openFilter" @open-filter="handleOpenfilter" class="mx-auto my-auto">
-          <IconShoppingCart color="#000000"/> Order History
+      <div class="w-full bg-neutral-50 p-6 rounded-xl border border-neutral-200 mt-4">
+        <BaseOption :flag="openFilter" @open-filter="handleOpenfilter" class="mx-auto my-auto text-neutral-700 hover:text-primary-600 transition-colors">
+          <IconShoppingCart color="currentColor" class="mr-2"/> Order History
         </BaseOption>
 
-        <div v-if="openFilter" class="mt-4">
+        <div v-if="openFilter" class="mt-6">
           <BaseCardList :product="products" mode="profile" />
         </div>
       </div>

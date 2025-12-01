@@ -138,18 +138,29 @@ const submitEdit = async(item)=>{
 }
 </script>
 <template>
-  <div class="min-h-screen w-full bg-gray-100 py-16 px-4 flex justify-center items-start">
-      <section class="bg-white w-full max-w-4xl rounded-3xl shadow-xl p-8 flex flex-col gap-8">
-          <BaseButton class=" absolute" size="small" theme="circular" @click="prevClick">
-          <IconBackArrow color="#000000" class="absolute"/>
-          </BaseButton>
-          <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5"><IconCheckList color="#000000" /> Currently selling</h1>
+  <div class="min-h-screen w-full bg-neutral-50 py-12 px-4 sm:px-6 lg:px-8">
+      <section class="bg-white w-full max-w-4xl mx-auto rounded-2xl shadow-sm border border-neutral-100 p-8 flex flex-col gap-8 relative">
+          <div class="absolute top-8 left-8">
+               <BaseButton size="small" theme="circular" @click="prevClick"><IconBackArrow color="#4b5563"/></BaseButton>
+          </div>
+          
+          <h1 class="text-center text-3xl font-extrabold text-neutral-900 flex justify-center items-center gap-3 mt-2">
+              <IconCheckList color="#4f46e5" class="w-8 h-8"/> Currently selling
+          </h1>
+          
           <BaseStoreList :products="curProducts" @remove="handleRemove" @edit="handleEdit" @submit="submitEdit" :editing-i-d="editingSet"/>
           <BaseStoreItem v-if="addProduct" :edit-mode="addProduct" :item="newItem" @submit="submitAdd"/>
-          <BaseButton size="small" theme="first" class=" flex items-center justify-center" @click="handleAdd"><IconPlus color="#ffffff"/></BaseButton>
-          <h1 class=" text-center text-3xl font-bold text-gray-700 flex justify-center items-center gap-5 border-t-2 pt-4"><IconCheckList color="#000000"/>Out of stock</h1>
+          
+          <div class="flex justify-center">
+               <BaseButton size="small" theme="first" class="flex items-center justify-center px-6 py-2" @click="handleAdd">
+                   <IconPlus color="#ffffff" class="mr-2"/> Add Product
+               </BaseButton>
+          </div>
+
+          <h1 class="text-center text-3xl font-extrabold text-neutral-900 flex justify-center items-center gap-3 border-t border-neutral-200 pt-8 mt-4">
+              <IconCheckList color="#ef4444" class="w-8 h-8"/> Out of stock
+          </h1>
           <BaseStoreList :products="outProducts" @remove="handleRemove" @edit="handleEdit" @submit="submitEdit" :editing-i-d="editingSet"/>
       </section>
   </div>
-    
 </template>
