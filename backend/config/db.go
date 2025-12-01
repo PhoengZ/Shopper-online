@@ -19,7 +19,7 @@ func ConnectDB() *mongo.Client {
 	if os.Getenv("VERCEL") == "" {
 		err = godotenv.Load()
 		if err != nil {
-			log.Fatal("Failed to load .env")
+			log.Println("Failed to load .env")
 		}
 	}
 	mongoURI := os.Getenv("MONGO_URI")
